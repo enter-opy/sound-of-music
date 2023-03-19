@@ -2,6 +2,8 @@
 
 <h3>An audio plugin that adds digital artifacts to an audio signal</h3>
 
+<img src="pluginwindow.png">
+
 <br>
 
 <h1>Artifacts</h1>
