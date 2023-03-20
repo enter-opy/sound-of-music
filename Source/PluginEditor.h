@@ -40,8 +40,7 @@ public:
     }
 };
 
-class SoundofmusicAudioProcessorEditor  : public juce::AudioProcessorEditor,
-    public Slider::Listener
+class SoundofmusicAudioProcessorEditor  : public juce::AudioProcessorEditor
 {
 public:
     SoundofmusicAudioProcessorEditor (SoundofmusicAudioProcessor&);
@@ -53,7 +52,6 @@ public:
 
     void processBackground();
 
-    void sliderValueChanged(Slider* slider) override;
     void mouseUp(const MouseEvent& event) override;
     void mouseDown(const MouseEvent& event) override;
 
@@ -86,9 +84,6 @@ private:
     float blue;
 
     Random random;
-
-    bool clicked;
-    bool valueChanged;
 
     SliderLookAndFeel sliderLookAndFeel;
 

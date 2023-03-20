@@ -29,7 +29,6 @@ SoundofmusicAudioProcessorEditor::SoundofmusicAudioProcessorEditor (Soundofmusic
     bitdepthSlider.setTextBoxStyle(Slider::NoTextBox, false, 0, 0);
     bitdepthSlider.setLookAndFeel(&sliderLookAndFeel);
     bitdepthSlider.addMouseListener(this, true);
-    bitdepthSlider.addListener(this);
     addAndMakeVisible(&bitdepthSlider);
 
     samplerateSlider.setSliderStyle(Slider::RotaryVerticalDrag);
@@ -38,7 +37,6 @@ SoundofmusicAudioProcessorEditor::SoundofmusicAudioProcessorEditor (Soundofmusic
     samplerateSlider.setTextBoxStyle(Slider::NoTextBox, false, 0, 0);
     samplerateSlider.setLookAndFeel(&sliderLookAndFeel);
     samplerateSlider.addMouseListener(this, true);
-    samplerateSlider.addListener(this);
     addAndMakeVisible(&samplerateSlider);
 
     jitterSlider.setSliderStyle(Slider::RotaryVerticalDrag);
@@ -47,7 +45,6 @@ SoundofmusicAudioProcessorEditor::SoundofmusicAudioProcessorEditor (Soundofmusic
     jitterSlider.setTextBoxStyle(Slider::NoTextBox, false, 0, 0);
     jitterSlider.setLookAndFeel(&sliderLookAndFeel);
     jitterSlider.addMouseListener(this, true);
-    jitterSlider.addListener(this);
     addAndMakeVisible(&jitterSlider);
 
     clipCeilingSlider.setSliderStyle(Slider::RotaryVerticalDrag);
@@ -56,7 +53,6 @@ SoundofmusicAudioProcessorEditor::SoundofmusicAudioProcessorEditor (Soundofmusic
     clipCeilingSlider.setTextBoxStyle(Slider::NoTextBox, false, 0, 0);
     clipCeilingSlider.setLookAndFeel(&sliderLookAndFeel);
     clipCeilingSlider.addMouseListener(this, true);
-    clipCeilingSlider.addListener(this);
     addAndMakeVisible(&clipCeilingSlider);
 
     crackleSlider.setSliderStyle(Slider::RotaryVerticalDrag);
@@ -65,7 +61,6 @@ SoundofmusicAudioProcessorEditor::SoundofmusicAudioProcessorEditor (Soundofmusic
     crackleSlider.setTextBoxStyle(Slider::NoTextBox, false, 0, 0);
     crackleSlider.setLookAndFeel(&sliderLookAndFeel);
     crackleSlider.addMouseListener(this, true);
-    crackleSlider.addListener(this);
     addAndMakeVisible(&crackleSlider);
 
     monoSlider.setSliderStyle(Slider::RotaryVerticalDrag);
@@ -74,7 +69,6 @@ SoundofmusicAudioProcessorEditor::SoundofmusicAudioProcessorEditor (Soundofmusic
     monoSlider.setTextBoxStyle(Slider::NoTextBox, false, 0, 0);
     monoSlider.setLookAndFeel(&sliderLookAndFeel);
     monoSlider.addMouseListener(this, true);
-    monoSlider.addListener(this);
     addAndMakeVisible(&monoSlider);
 
     mixSlider.setSliderStyle(Slider::RotaryVerticalDrag);
@@ -83,7 +77,6 @@ SoundofmusicAudioProcessorEditor::SoundofmusicAudioProcessorEditor (Soundofmusic
     mixSlider.setTextBoxStyle(Slider::NoTextBox, false, 0, 0);
     mixSlider.setLookAndFeel(&sliderLookAndFeel);
     mixSlider.addMouseListener(this, true);
-    mixSlider.addListener(this);
     addAndMakeVisible(&mixSlider);
 }
 
@@ -118,21 +111,12 @@ void SoundofmusicAudioProcessorEditor::resized()
 }
 
 void SoundofmusicAudioProcessorEditor::mouseUp(const MouseEvent& event) {
-    if (valueChanged) {
-        processBackground();
-    }
-
-    valueChanged = false;
-    clicked = false;
+    processBackground();
 }
 
 void SoundofmusicAudioProcessorEditor::mouseDown(const MouseEvent& event) {
 
-    clicked = true;
-}
-
-void SoundofmusicAudioProcessorEditor::sliderValueChanged(Slider* slider) {
-    valueChanged = true;
+    processBackground();
 }
 
 void SoundofmusicAudioProcessorEditor::processBackground() {
@@ -217,7 +201,9 @@ void SoundofmusicAudioProcessorEditor::processBackground() {
                 }
             }
 
-            repaint();
+            
         }
     }
+
+    repaint();
 }
