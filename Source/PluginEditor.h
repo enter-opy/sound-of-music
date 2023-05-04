@@ -17,6 +17,18 @@
 
 class SliderLookAndFeel : public LookAndFeel_V4 {
 public:
+    void drawLinearSlider(juce::Graphics& g, int x, int y, int width, int height, float sliderPos, float minSliderPos, float maxSliderPos, const Slider::SliderStyle sliderStyle, Slider& slider) override {
+
+        Rectangle<float> area(x, y, width, height);
+        Rectangle<float> track(x, sliderPos, width, height);
+
+        g.setColour(Colours::white);
+        g.fillRect(track);
+
+        g.setColour(Colours::white);
+        g.drawRect(area);
+    }
+
     void drawRotarySlider(juce::Graphics& g, int x, int y, int width, int height, float sliderPos, float rotatoryStartAngle, float rotatoryEndAngle, juce::Slider& slider) override {
         float diameter = jmin(width - 5, height - 5);
         float radius = diameter / 2;
@@ -28,17 +40,15 @@ public:
 
         Rectangle<float> area(rx, ry, diameter, diameter);
 
+        Path thumb;
+        thumb.addRectangle(0, -radius + 2.0, 2.5f, radius * 0.5);
         g.setColour(Colours::white);
-        g.fillEllipse(area);
-
-        Path highlight;
-        highlight.addRectangle(0, -radius + 2.0, 2.5f, radius * 0.5);
-        g.setColour(Colours::black);
-        g.fillPath(highlight, AffineTransform::rotation(angle).translated(centerX, centerY));
+        g.fillPath(thumb, AffineTransform::rotation(angle).translated(centerX, centerY));
 
         g.drawEllipse(area, 2.5f);
     }
 };
+
 
 class SoundofmusicAudioProcessorEditor  : public juce::AudioProcessorEditor
 {
@@ -49,11 +59,6 @@ public:
     //==============================================================================
     void paint (juce::Graphics&) override;
     void resized() override;
-
-    void processBackground();
-
-    void mouseUp(const MouseEvent& event) override;
-    void mouseDown(const MouseEvent& event) override;
 
 private:
     SoundofmusicAudioProcessor& audioProcessor;
@@ -66,26 +71,15 @@ private:
     Slider monoSlider;
     Slider mixSlider;
 
-    Image oldGuitarist;
-    Image oldGuitaristCopy;
-    Image frame;
-    Image sliderLabels;
-
-    int bitepth_;
-    int step_;
-    float jitter_;
-    float clipCeiling_;
-    float crackle_;
-    float mono_;
-    float mix_;
-
-    float red;
-    float green;
-    float blue;
-
-    Random random;
-
     SliderLookAndFeel sliderLookAndFeel;
+
+    Label bitdepthLabel;
+    Label samplerateLabel;
+    Label jitterLabel;
+    Label clipCeilingLabel;
+    Label crackleLabel;
+    Label monoLabel;
+    Label mixLabel;
 
 public:
     std::unique_ptr <AudioProcessorValueTreeState::SliderAttachment> bitdepthValue;

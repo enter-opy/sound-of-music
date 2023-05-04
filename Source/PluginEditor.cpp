@@ -13,7 +13,7 @@
 SoundofmusicAudioProcessorEditor::SoundofmusicAudioProcessorEditor (SoundofmusicAudioProcessor& p)
     : AudioProcessorEditor (&p), audioProcessor (p)
 {
-    setSize(632, 900);
+    setSize(880, 320);
 
     bitdepthValue = std::make_unique<AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.treeState, BITDEPTH_ID, bitdepthSlider);
     samplerateValue = std::make_unique<AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.treeState, SAMPLERATE_ID, samplerateSlider);
@@ -23,60 +23,74 @@ SoundofmusicAudioProcessorEditor::SoundofmusicAudioProcessorEditor (Soundofmusic
     monoValue = std::make_unique<AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.treeState, MONO_ID, monoSlider);
     mixValue = std::make_unique<AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.treeState, MIX_ID, mixSlider);
 
-    bitdepthSlider.setSliderStyle(Slider::RotaryVerticalDrag);
+    bitdepthSlider.setSliderStyle(Slider::SliderStyle::LinearBarVertical);
     bitdepthSlider.setRange(2.0, 32.0, 1.0);
     bitdepthSlider.setValue(audioProcessor.getValue(0));
     bitdepthSlider.setTextBoxStyle(Slider::NoTextBox, false, 0, 0);
+    bitdepthLabel.setText("BITDEPTH", dontSendNotification);
+    bitdepthLabel.setJustificationType(Justification::centred);
+    addAndMakeVisible(&bitdepthLabel);
     bitdepthSlider.setLookAndFeel(&sliderLookAndFeel);
-    bitdepthSlider.addMouseListener(this, true);
     addAndMakeVisible(&bitdepthSlider);
 
-    samplerateSlider.setSliderStyle(Slider::RotaryVerticalDrag);
+    samplerateSlider.setSliderStyle(Slider::LinearBarVertical);
     samplerateSlider.setRange(1102.5, 44100.0, 1.0);
     samplerateSlider.setValue(audioProcessor.getValue(1));
     samplerateSlider.setTextBoxStyle(Slider::NoTextBox, false, 0, 0);
+    samplerateLabel.setText("SAMPLERATE", dontSendNotification);
+    samplerateLabel.setJustificationType(Justification::centred);
+    addAndMakeVisible(&samplerateLabel);
     samplerateSlider.setLookAndFeel(&sliderLookAndFeel);
-    samplerateSlider.addMouseListener(this, true);
     addAndMakeVisible(&samplerateSlider);
 
-    jitterSlider.setSliderStyle(Slider::RotaryVerticalDrag);
+    jitterSlider.setSliderStyle(Slider::LinearBarVertical);
     jitterSlider.setRange(0.0, 100.0, 1.0);
     jitterSlider.setValue(audioProcessor.getValue(2));
     jitterSlider.setTextBoxStyle(Slider::NoTextBox, false, 0, 0);
+    jitterLabel.setText("JITTER", dontSendNotification);
+    jitterLabel.setJustificationType(Justification::centred);
+    addAndMakeVisible(&jitterLabel);
     jitterSlider.setLookAndFeel(&sliderLookAndFeel);
-    jitterSlider.addMouseListener(this, true);
     addAndMakeVisible(&jitterSlider);
 
-    clipCeilingSlider.setSliderStyle(Slider::RotaryVerticalDrag);
+    clipCeilingSlider.setSliderStyle(Slider::LinearBarVertical);
     clipCeilingSlider.setRange(-15.0, 0.0, 0.1);
     clipCeilingSlider.setValue(audioProcessor.getValue(3));
     clipCeilingSlider.setTextBoxStyle(Slider::NoTextBox, false, 0, 0);
+    clipCeilingLabel.setText("CLIP", dontSendNotification);
+    clipCeilingLabel.setJustificationType(Justification::centred);
+    addAndMakeVisible(&clipCeilingLabel);
     clipCeilingSlider.setLookAndFeel(&sliderLookAndFeel);
-    clipCeilingSlider.addMouseListener(this, true);
     addAndMakeVisible(&clipCeilingSlider);
 
-    crackleSlider.setSliderStyle(Slider::RotaryVerticalDrag);
+    crackleSlider.setSliderStyle(Slider::LinearBarVertical);
     crackleSlider.setRange(0.0, 100.0, 1.0);
     crackleSlider.setValue(audioProcessor.getValue(4));
     crackleSlider.setTextBoxStyle(Slider::NoTextBox, false, 0, 0);
+    crackleLabel.setText("CRACKLE", dontSendNotification);
+    crackleLabel.setJustificationType(Justification::centred);
+    addAndMakeVisible(&crackleLabel);
     crackleSlider.setLookAndFeel(&sliderLookAndFeel);
-    crackleSlider.addMouseListener(this, true);
     addAndMakeVisible(&crackleSlider);
 
     monoSlider.setSliderStyle(Slider::RotaryVerticalDrag);
     monoSlider.setRange(0.0, 100.0, 1.0);
     monoSlider.setValue(audioProcessor.getValue(5));
     monoSlider.setTextBoxStyle(Slider::NoTextBox, false, 0, 0);
+    monoLabel.setText("STEREO/MONO", dontSendNotification);
+    monoLabel.setJustificationType(Justification::centred);
+    addAndMakeVisible(&monoLabel);
     monoSlider.setLookAndFeel(&sliderLookAndFeel);
-    monoSlider.addMouseListener(this, true);
     addAndMakeVisible(&monoSlider);
 
     mixSlider.setSliderStyle(Slider::RotaryVerticalDrag);
     mixSlider.setRange(0.0, 100.0, 0.0);
     mixSlider.setValue(audioProcessor.getValue(6));
     mixSlider.setTextBoxStyle(Slider::NoTextBox, false, 0, 0);
+    mixLabel.setText("DRY/WET", dontSendNotification);
+    mixLabel.setJustificationType(Justification::centred);
+    addAndMakeVisible(&mixLabel);
     mixSlider.setLookAndFeel(&sliderLookAndFeel);
-    mixSlider.addMouseListener(this, true);
     addAndMakeVisible(&mixSlider);
 }
 
@@ -87,123 +101,25 @@ SoundofmusicAudioProcessorEditor::~SoundofmusicAudioProcessorEditor()
 //==============================================================================
 void SoundofmusicAudioProcessorEditor::paint (juce::Graphics& g)
 {
-    oldGuitarist = ImageCache::getFromMemory(BinaryData::oldguitarist_png, BinaryData::oldguitarist_pngSize);
-    oldGuitaristCopy = ImageCache::getFromMemory(BinaryData::oldguitaristcopy_png, BinaryData::oldguitaristcopy_pngSize);
-    frame = ImageCache::getFromMemory(BinaryData::frame_png, BinaryData::frame_pngSize);
-    sliderLabels = ImageCache::getFromMemory(BinaryData::sliderlabels_png, BinaryData::sliderlabels_pngSize);
-
-    g.drawImageAt(oldGuitaristCopy, 56, 60);
-    g.drawImageAt(frame, 0, 0);
-    g.drawImageAt(sliderLabels, 103, 210);
-
-    bitdepthSlider.setValue(audioProcessor.getValue(0));
+    g.setColour(Colour::fromRGB(0x0D, 0x0D, 0x14));
+    g.fillAll();
 }
 
 void SoundofmusicAudioProcessorEditor::resized()
 {
-    bitdepthSlider.setBounds(116, 120, 80, 80);
-    samplerateSlider.setBounds(116, 260, 80, 80);
-    jitterSlider.setBounds(116, 400, 80, 80);
-    clipCeilingSlider.setBounds(116, 540, 80, 80);
-    crackleSlider.setBounds(116, 680, 80, 80);
-    monoSlider.setBounds(370, 245, 120, 120);
-    mixSlider.setBounds(370, 510, 120, 120);
-}
+    bitdepthSlider.setBounds(60, 75, 20, 150);
+    bitdepthLabel.setBounds(20, 240, 100, 20);
+    samplerateSlider.setBounds(160, 75, 20, 150);
+    samplerateLabel.setBounds(120, 240, 100, 20);
+    jitterSlider.setBounds(260, 75, 20, 150);
+    jitterLabel.setBounds(220, 240, 100, 20);
+    clipCeilingSlider.setBounds(360, 75, 20, 150);
+    clipCeilingLabel.setBounds(320, 240, 100, 20);
+    crackleSlider.setBounds(460, 75, 20, 150);
+    crackleLabel.setBounds(420, 240, 100, 20);
 
-void SoundofmusicAudioProcessorEditor::mouseUp(const MouseEvent& event) {
-    processBackground();
-}
-
-void SoundofmusicAudioProcessorEditor::mouseDown(const MouseEvent& event) {
-
-    processBackground();
-}
-
-void SoundofmusicAudioProcessorEditor::processBackground() {
-    int height = oldGuitarist.getHeight();
-    int width = oldGuitarist.getWidth();
-
-    // get parameters
-    bitepth_ = pow(2, bitdepthSlider.getValue()) / 2;
-    step_ = audioProcessor.getSampleRate() / samplerateSlider.getValue();
-    jitter_ = jitterSlider.getValue() / 1000.0;
-    clipCeiling_ = Decibels::decibelsToGain(clipCeilingSlider.getValue());
-    crackle_ = crackleSlider.getValue();
-    mono_ = monoSlider.getValue() / 300.0;
-    mix_ = mixSlider.getValue() / 100.0;
-
-    for (int i = 1; i <= width; ) {
-        int m = i;
-
-        for (int j = 1; j <= height; ) {
-            i = m;
-
-            red = oldGuitarist.getPixelAt(i, j).getFloatRed();
-            green = oldGuitarist.getPixelAt(i, j).getFloatGreen();
-            blue = oldGuitarist.getPixelAt(i, j).getFloatBlue();
-
-            // bit depth reduction happens here
-            red = round((red)*bitepth_) / bitepth_;
-            green = round((green)*bitepth_) / bitepth_;
-            blue = round((blue)*bitepth_) / bitepth_;
-
-            // noise is added here
-            //if (!(red + 2 * (random.nextInt(3) - 1) * jitter_ > 1.0 || red + 2 * (random.nextInt(3) - 1) * jitter_ > 0.0)) {
-            red += (random.nextInt(3) - 1) * jitter_;
-            //}
-            //if (!(green + 2 * (random.nextInt(3) - 1) * jitter_ > 1.0 || green + 2 * (random.nextInt(3) - 1) * jitter_ > 0.0)) {
-            green += (random.nextInt(3) - 1) * jitter_;
-            //}
-            //if (!(blue + 2 * (random.nextInt(3) - 1) * jitter_ > 1.0 || blue + 2 * (random.nextInt(3) - 1) * jitter_ > 0.0)) {
-            blue += (random.nextInt(3) - 1) * jitter_;
-            //}
-
-            // clipping happens here
-            if (red >= clipCeiling_) {
-                red = clipCeiling_;
-            }
-            if (green >= clipCeiling_) {
-                green = clipCeiling_;
-            }
-            if (blue >= clipCeiling_) {
-                blue = clipCeiling_;
-            }
-            red *= 1 / clipCeiling_;
-            green *= 1 / clipCeiling_;
-            blue *= 1 / clipCeiling_;
-
-            // crackle is added here
-            if (crackle_ > 0) {
-                if (random.nextInt(100 - crackle_ + 2) == 0) {
-                    red = 0.0;
-                    green = 0.0;
-                    blue = 0.0;
-                }
-            }
-
-            // monochrome is applied here
-            red = (1 - 2 * mono_) * red + mono_ * green + mono_ * blue;
-            green = mono_ * red + (1 - 2 * mono_) * green + mono_ * blue;
-            blue = mono_ * red + mono_ * green + (1 - 2 * mono_) * blue;
-
-            int n = j;
-
-            // reduction of resolution happens here
-            for (int k = 1; k <= step_ && k <= width; k++, i++) {
-                j = n;
-                for (int l = 1; l <= step_ && l <= height; l++, j++) {
-                    // mix is applied here
-                    red = (1 - mix_) * oldGuitarist.getPixelAt(i, j).getFloatRed() + mix_ * red;
-                    green = (1 - mix_) * oldGuitarist.getPixelAt(i, j).getFloatGreen() + mix_ * green;
-                    blue = (1 - mix_) * oldGuitarist.getPixelAt(i, j).getFloatBlue() + mix_ * blue;
-
-                    oldGuitaristCopy.setPixelAt(i, j, Colour::fromFloatRGBA(red, green, blue, 1.0));
-                }
-            }
-
-            
-        }
-    }
-
-    repaint();
+    monoSlider.setBounds(560, 100, 100, 100);
+    monoLabel.setBounds(560, 240, 100, 20);
+    mixSlider.setBounds(720, 100, 100, 100);
+    mixLabel.setBounds(720, 240, 100, 20);
 }

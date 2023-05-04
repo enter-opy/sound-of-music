@@ -5,15 +5,6 @@
               companyName="vivek vijayan">
   <MAINGROUP id="u8I9Ca" name="Sound of music">
     <GROUP id="{0BBF2A81-2DD3-033B-256A-EC5D9EAC8C5A}" name="Source">
-      <GROUP id="{23540139-54B3-2091-C73F-3C034CDAC828}" name="Assets">
-        <FILE id="hBTlFq" name="frame.png" compile="0" resource="1" file="Source/Assets/frame.png"/>
-        <FILE id="gQgI0P" name="old-guitarist-copy.png" compile="0" resource="1"
-              file="Source/Assets/old-guitarist-copy.png"/>
-        <FILE id="xbA4Ti" name="old-guitarist.png" compile="0" resource="1"
-              file="Source/Assets/old-guitarist.png"/>
-        <FILE id="LNOuWk" name="slider-labels.png" compile="0" resource="1"
-              file="Source/Assets/slider-labels.png"/>
-      </GROUP>
       <FILE id="WYYC5T" name="PluginProcessor.cpp" compile="1" resource="0"
             file="Source/PluginProcessor.cpp"/>
       <FILE id="tryfVV" name="PluginProcessor.h" compile="0" resource="0"
