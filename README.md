@@ -21,12 +21,9 @@
         <b>Crackle</b> - Chance of occurance of cracks and pops in the signal
     </li>
     <li>
-        <b>Mono</b> - Stereo width of the signal (Higher value makes the signal mono)
+        <b>Stereo/Mono</b> - Stereo width of the signal (Higher value makes the signal mono)
     </li>
     <li>
-        <b>Mix</b> - Ratio of dry signal to wet signal
-    </li>
-    <li>
-        <b>Crackle</b> - Chance of occurance of cracks and pops in the signal
+        <b>Dry/Wet</b> - Ratio of dry signal to wet signal
     </li>
 </ul>
