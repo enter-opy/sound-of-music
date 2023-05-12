@@ -18,6 +18,8 @@
 
 class SliderLookAndFeel : public LookAndFeel_V4 {
 public:
+    float colourPosition;
+
     void drawLinearSlider(Graphics& g, int x, int y, int width, int height, float sliderPos, float minSliderPos, float maxSliderPos, const Slider::SliderStyle sliderStyle, Slider& slider) override {
         Rectangle<float> area(x, y, width, height);
         Rectangle<float> track(x, sliderPos, width, height);
@@ -38,7 +40,7 @@ public:
         float ry = centerY - radius;
         float angle = rotatoryStartAngle + sliderPos * (rotatoryEndAngle - rotatoryStartAngle);
 
-        ColourGradient gradient(Colour::fromRGB(0x37, 0x9B, 0xE3), centerX, 0, Colour::fromRGB(0xCB, 0x16, 0x6D), centerX, height, false);
+        ColourGradient gradient(Colour::fromRGB(0x37, 0x9B, 0xE3), centerX, 0, Colour::fromRGB(0xCB, 0x16, 0x6D), centerX, height + 50.0 - colourPosition, false);
 
         Rectangle<float> area(rx, ry, diameter, diameter);
 
@@ -52,7 +54,8 @@ public:
 };
 
 
-class SoundofmusicAudioProcessorEditor  : public juce::AudioProcessorEditor
+class SoundofmusicAudioProcessorEditor  : public juce::AudioProcessorEditor,
+    Slider::Listener
 {
 public:
     SoundofmusicAudioProcessorEditor (SoundofmusicAudioProcessor&);
@@ -62,6 +65,8 @@ public:
     void paint (juce::Graphics&) override;
     void resized() override;
 
+    void sliderValueChanged(Slider* slider) override;
+
 private:
     SoundofmusicAudioProcessor& audioProcessor;
 
@@ -69,28 +74,32 @@ private:
     Slider samplerateSlider;
     Slider jitterSlider;
     Slider clipCeilingSlider;
-    Slider crackleSlider;
     Slider monoSlider;
     Slider mixSlider;
 
-    SliderLookAndFeel sliderLookAndFeel;
+    SliderLookAndFeel bitdepthLookAndFeel;
+    SliderLookAndFeel samplerateLookAndFeel;
+    SliderLookAndFeel jitterLookAndFeel;
+    SliderLookAndFeel clipCeilingLookAndFeel;
+    SliderLookAndFeel monoLookAndFeel;
+    SliderLookAndFeel mixLookAndFeel;
 
     Label bitdepthLabel;
     Label samplerateLabel;
     Label jitterLabel;
     Label clipCeilingLabel;
-    Label crackleLabel;
     Label monoLabel;
     Label mixLabel;
 
     Spectrum spectrum;
+
+    Rectangle<float> distortionArea;
 
 public:
     std::unique_ptr <AudioProcessorValueTreeState::SliderAttachment> bitdepthValue;
     std::unique_ptr <AudioProcessorValueTreeState::SliderAttachment> samplerateValue;
     std::unique_ptr <AudioProcessorValueTreeState::SliderAttachment> jitterValue;
     std::unique_ptr <AudioProcessorValueTreeState::SliderAttachment> clipCeilingValue;
-    std::unique_ptr <AudioProcessorValueTreeState::SliderAttachment> crackleValue;
     std::unique_ptr <AudioProcessorValueTreeState::SliderAttachment> monoValue;
     std::unique_ptr <AudioProcessorValueTreeState::SliderAttachment> mixValue;
 

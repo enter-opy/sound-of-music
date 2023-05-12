@@ -14,9 +14,7 @@
 //==============================================================================
 Spectrum::Spectrum()
 {
-    // In your constructor, you should add any child components, and
-    // initialise any special settings that your component needs.
-
+    setSize(800, 200);
 }
 
 Spectrum::~Spectrum()
@@ -26,12 +24,19 @@ Spectrum::~Spectrum()
 void Spectrum::paint (juce::Graphics& g)
 {
     g.setColour(Colour::fromRGB(0x0B, 0x0D, 0x11));
-    g.fillRect(spectrum);
+    g.fillRect(area);
     g.setColour(Colours::white);
-    g.drawRect(spectrum);
+    g.drawRect(area);
 }
 
 void Spectrum::resized()
 {
-    spectrum.setBounds(40, 40, 800, 180);
+    area.setBounds(0, 0, 800, 180);
 }
+
+void Spectrum::mouseDown(const MouseEvent& event)
+{
+    int x = event.getMouseDownX();
+    DBG(x);
+}
+

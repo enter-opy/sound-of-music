@@ -22,9 +22,6 @@
 #define CLIPCELING_ID "clipceiling"
 #define CLIPCELING_NAME "Clip Ceiling"
 
-#define CRACKLE_ID "crackle"
-#define CRACKLE_NAME "Crackle"
-
 #define MIX_ID "mix"
 #define MIX_NAME "Mix"
 
@@ -95,7 +92,6 @@ private:
     float samplerate_;
     float jitter_;
     float clip_;
-    float crackle_;
     float mono_;
     float mix_;
 

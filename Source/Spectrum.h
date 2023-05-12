@@ -24,8 +24,10 @@ public:
     void paint (juce::Graphics&) override;
     void resized() override;
 
+    void mouseDown(const MouseEvent& event) override;
+
 private:
-    Rectangle<float> spectrum;
+    Rectangle<float> area;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Spectrum)
 };

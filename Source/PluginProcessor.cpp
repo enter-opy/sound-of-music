@@ -26,7 +26,6 @@ SoundofmusicAudioProcessor::SoundofmusicAudioProcessor()
             std::make_unique<AudioParameterFloat>(SAMPLERATE_ID, SAMPLERATE_NAME, 1102.5, 44100.0, 44100.0),
             std::make_unique<AudioParameterFloat>(JITTER_ID, JITTER_NAME, 0.0, 100.0, 0.0),
             std::make_unique<AudioParameterFloat>(CLIPCELING_ID, CLIPCELING_NAME, -15.0, 0.0, 0.0),
-            std::make_unique<AudioParameterFloat>(CRACKLE_ID, CRACKLE_NAME, 0.0, 100.0, 0.0),
             std::make_unique<AudioParameterFloat>(MONO_ID, MONO_NAME, 0.0, 100.0, 0.0),
             std::make_unique<AudioParameterFloat>(MIX_ID, MIX_NAME, 0.0, 100.0, 100.0)
         }
@@ -35,7 +34,6 @@ SoundofmusicAudioProcessor::SoundofmusicAudioProcessor()
     samplerate_(44100.0),
     jitter_(0.0),
     clip_(0.0),
-    crackle_(0.0),
     mono_(0.0),
     mix_(100.0)
 #endif
@@ -160,9 +158,6 @@ double SoundofmusicAudioProcessor::getValue(int slider) {
     else if (slider == 3) {
         return clip_;
     }
-    else if (slider == 4) {
-        return crackle_;
-    }
     else if (slider == 5) {
         return mono_;
     }
@@ -184,15 +179,14 @@ void SoundofmusicAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
     samplerate_ = *treeState.getRawParameterValue(SAMPLERATE_ID);
     jitter_ = *treeState.getRawParameterValue(JITTER_ID);
     clip_ = *treeState.getRawParameterValue(CLIPCELING_ID);
-    crackle_ = *treeState.getRawParameterValue(CRACKLE_ID);
     mono_ = *treeState.getRawParameterValue(MONO_ID);
     mix_ = *treeState.getRawParameterValue(MIX_ID);
 
     int bitdepth = pow(2, *treeState.getRawParameterValue(BITDEPTH_ID)) / 2;
     int newSamplerate = *treeState.getRawParameterValue(SAMPLERATE_ID);
     float jitter = *treeState.getRawParameterValue(JITTER_ID) / 100.0;
+    int crackle = *treeState.getRawParameterValue(JITTER_ID);
     float clipCeiling = Decibels::decibelsToGain((float)*treeState.getRawParameterValue(CLIPCELING_ID));
-    int crackle = *treeState.getRawParameterValue(CRACKLE_ID);
     float mono = *treeState.getRawParameterValue(MONO_ID) / 200.0;
     float mix = *treeState.getRawParameterValue(MIX_ID) / 100.0;
 
