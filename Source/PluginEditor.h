@@ -10,6 +10,7 @@
 
 #include <JuceHeader.h>
 #include "PluginProcessor.h"
+#include "Spectrum.h"
 
 //==============================================================================
 /**
@@ -17,19 +18,18 @@
 
 class SliderLookAndFeel : public LookAndFeel_V4 {
 public:
-    void drawLinearSlider(juce::Graphics& g, int x, int y, int width, int height, float sliderPos, float minSliderPos, float maxSliderPos, const Slider::SliderStyle sliderStyle, Slider& slider) override {
-
+    void drawLinearSlider(Graphics& g, int x, int y, int width, int height, float sliderPos, float minSliderPos, float maxSliderPos, const Slider::SliderStyle sliderStyle, Slider& slider) override {
         Rectangle<float> area(x, y, width, height);
         Rectangle<float> track(x, sliderPos, width, height);
 
-        g.setColour(Colours::white);
-        g.fillRect(track);
+        ColourGradient gradient(Colour::fromRGB(0x37, 0x9B, 0xE3), x + height / 2, y, Colour::fromRGB(0xCB, 0x16, 0x6D), x + height / 2, y + height, false);
 
-        g.setColour(Colours::white);
+        g.setGradientFill(gradient);
+        g.fillRect(track);
         g.drawRect(area);
     }
 
-    void drawRotarySlider(juce::Graphics& g, int x, int y, int width, int height, float sliderPos, float rotatoryStartAngle, float rotatoryEndAngle, juce::Slider& slider) override {
+    void drawRotarySlider(Graphics& g, int x, int y, int width, int height, float sliderPos, float rotatoryStartAngle, float rotatoryEndAngle, juce::Slider& slider) override {
         float diameter = jmin(width - 5, height - 5);
         float radius = diameter / 2;
         float centerX = x + width / 2;
@@ -38,14 +38,16 @@ public:
         float ry = centerY - radius;
         float angle = rotatoryStartAngle + sliderPos * (rotatoryEndAngle - rotatoryStartAngle);
 
+        ColourGradient gradient(Colour::fromRGB(0x37, 0x9B, 0xE3), centerX, 0, Colour::fromRGB(0xCB, 0x16, 0x6D), centerX, height, false);
+
         Rectangle<float> area(rx, ry, diameter, diameter);
 
         Path thumb;
-        thumb.addRectangle(0, -radius + 2.0, 2.5f, radius * 0.5);
-        g.setColour(Colours::white);
+        thumb.addEllipse(0, -radius + 10.0, 10.0f, 10.0f);
+        g.setGradientFill(gradient);
         g.fillPath(thumb, AffineTransform::rotation(angle).translated(centerX, centerY));
 
-        g.drawEllipse(area, 2.5f);
+        g.drawEllipse(area, 4.0f);
     }
 };
 
@@ -80,6 +82,8 @@ private:
     Label crackleLabel;
     Label monoLabel;
     Label mixLabel;
+
+    Spectrum spectrum;
 
 public:
     std::unique_ptr <AudioProcessorValueTreeState::SliderAttachment> bitdepthValue;

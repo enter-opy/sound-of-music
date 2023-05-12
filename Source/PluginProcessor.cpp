@@ -190,7 +190,7 @@ void SoundofmusicAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
 
     int bitdepth = pow(2, *treeState.getRawParameterValue(BITDEPTH_ID)) / 2;
     int newSamplerate = *treeState.getRawParameterValue(SAMPLERATE_ID);
-    float jitter = *treeState.getRawParameterValue(JITTER_ID) / 5000.0;
+    float jitter = *treeState.getRawParameterValue(JITTER_ID) / 100.0;
     float clipCeiling = Decibels::decibelsToGain((float)*treeState.getRawParameterValue(CLIPCELING_ID));
     int crackle = *treeState.getRawParameterValue(CRACKLE_ID);
     float mono = *treeState.getRawParameterValue(MONO_ID) / 200.0;
