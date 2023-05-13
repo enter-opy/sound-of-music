@@ -11,9 +11,11 @@
 
 //==============================================================================
 SoundofmusicAudioProcessorEditor::SoundofmusicAudioProcessorEditor (SoundofmusicAudioProcessor& p)
-    : AudioProcessorEditor (&p), audioProcessor (p)
+    : AudioProcessorEditor (&p), audioProcessor (p), forwardFFT(10),
+    window(1 << 10, juce::dsp::WindowingFunction<float>::hann)
 {
     setSize(880, 520);
+    startTimerHz(30);
 
     crushValue = std::make_unique<AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.treeState, CRUSH_ID, crushSlider);
     downSampleValue = std::make_unique<AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.treeState, DOWNSAMPLE_ID, downSampleSlider);
@@ -93,9 +95,9 @@ SoundofmusicAudioProcessorEditor::SoundofmusicAudioProcessorEditor (Soundofmusic
     monoSlider.setRange(0.0, 100.0, 1.0);
     monoSlider.setValue(audioProcessor.getValue(5));
     monoSlider.setTextBoxStyle(Slider::NoTextBox, false, 0, 0);
-    monoLabel.setText("STEREO/MONO", dontSendNotification);
-    monoLabel.setJustificationType(Justification::centred);
-    addAndMakeVisible(&monoLabel);
+    monoName.setText("STEREO/MONO", dontSendNotification);
+    monoName.setJustificationType(Justification::centred);
+    addAndMakeVisible(&monoName);
     monoSlider.setLookAndFeel(&monoLookAndFeel);
     monoLookAndFeel.colourPosition = 90.0 / 100.0 * (monoSlider.getValue());
     monoSlider.addListener(this);
@@ -105,9 +107,9 @@ SoundofmusicAudioProcessorEditor::SoundofmusicAudioProcessorEditor (Soundofmusic
     mixSlider.setRange(0.0, 100.0, 0.0);
     mixSlider.setValue(audioProcessor.getValue(6));
     mixSlider.setTextBoxStyle(Slider::NoTextBox, false, 0, 0);
-    mixLabel.setText("DRY/WET", dontSendNotification);
-    mixLabel.setJustificationType(Justification::centred);
-    addAndMakeVisible(&mixLabel);
+    mixName.setText("DRY/WET", dontSendNotification);
+    mixName.setJustificationType(Justification::centred);
+    addAndMakeVisible(&mixName);
     mixSlider.setLookAndFeel(&mixLookAndFeel);
     mixLookAndFeel.colourPosition = 90.0 / 100.0 * (mixSlider.getValue());
     mixSlider.addListener(this);
@@ -128,13 +130,16 @@ void SoundofmusicAudioProcessorEditor::paint (juce::Graphics& g)
 
     g.setGradientFill(gradient);
     g.drawRoundedRectangle(distortionArea, 10, 2);
+
+    drawFrame(g);
 }
 
 void SoundofmusicAudioProcessorEditor::resized()
 {
-    spectrum.setBounds(40, 40, 800, 220);
+    spectrum.setBounds(40, 40, 840, 260);
 
     distortionArea.setBounds(40, 290, 480, 170);
+    spectrumArea.setBounds(40, 40, 840, 220);
 
     crushSlider.setBounds(60, 310, 80, 80);
     crushName.setBounds(50, 420, 100, 20);
@@ -149,10 +154,10 @@ void SoundofmusicAudioProcessorEditor::resized()
     clipName.setBounds(410, 420, 100, 20);
     clipIndicator.setBounds(410, 420, 100, 20);
 
-    monoSlider.setBounds(560, 300, 100, 100);
-    monoLabel.setBounds(560, 440, 100, 20);
-    mixSlider.setBounds(720, 300, 100, 100);
-    mixLabel.setBounds(720, 440, 100, 20);
+    monoSlider.setBounds(560, 310, 80, 80);
+    monoName.setBounds(560, 420, 100, 20);
+    mixSlider.setBounds(720, 310, 80, 80);
+    mixName.setBounds(720, 420, 100, 20);
 }
 
 void SoundofmusicAudioProcessorEditor::sliderValueChanged(Slider* slider) {
@@ -233,5 +238,56 @@ void SoundofmusicAudioProcessorEditor::sliderDragEnded(Slider* slider) {
     }
     else if (slider == &mixSlider) {
 
+    }
+}
+
+void SoundofmusicAudioProcessorEditor::drawNextFrameOfSpectrum()
+{
+    window.multiplyWithWindowingTable(audioProcessor.fftData, audioProcessor.fftSize);
+
+    forwardFFT.performFrequencyOnlyForwardTransform(audioProcessor.fftData);
+
+    auto mindB = -100.0f;
+    auto maxdB = 0.0f;
+
+    for (int i = 0; i < audioProcessor.scopeSize; ++i)
+    {
+        auto skewedProportionX = 1.0f - std::exp(std::log(1.0f - (float)i / (float)audioProcessor.scopeSize) * 0.2f);
+        auto fftDataIndex = juce::jlimit(0, audioProcessor.fftSize / 2, (int)(skewedProportionX * (float)audioProcessor.fftSize * 0.5f));
+        auto level = juce::jmap(juce::jlimit(mindB, maxdB, juce::Decibels::gainToDecibels(audioProcessor.fftData[fftDataIndex])
+            - juce::Decibels::gainToDecibels((float)audioProcessor.fftSize)),
+            mindB, maxdB, 0.0f, 1.0f);
+
+        audioProcessor.scopeData[i] = level;
+    }
+}
+
+void SoundofmusicAudioProcessorEditor::timerCallback()
+{
+    if (audioProcessor.nextFFTBlockReady)
+    {
+        drawNextFrameOfSpectrum();
+        audioProcessor.nextFFTBlockReady = false;
+        repaint();
+    }
+}
+
+void SoundofmusicAudioProcessorEditor::drawFrame(juce::Graphics& g)
+{
+    ColourGradient gradientSpectrum(Colour::fromRGB(0x37, 0x9B, 0xE3), 40, 40, Colour::fromRGB(0xCB, 0x16, 0x6D), 40, 220, false);
+    g.setGradientFill(gradientSpectrum);
+
+    for (int i = 5; i < audioProcessor.scopeSize - 5; ++i)
+    {
+        audioProcessor.scopeData[i] = audioProcessor.scopeData[i - 4] + audioProcessor.scopeData[i - 3] + audioProcessor.scopeData[i - 2] + audioProcessor.scopeData[i - 1] + audioProcessor.scopeData[i] + audioProcessor.scopeData[i + 1] + audioProcessor.scopeData[i + 2] + audioProcessor.scopeData[i + 3] + audioProcessor.scopeData[i + 4];
+        audioProcessor.scopeData[i] /= 9.0;
+    }
+
+    for (int i = 1; i < audioProcessor.scopeSize; ++i)
+    {
+        g.drawLine({ (float)juce::jmap(i - 1, 0, audioProcessor.scopeSize - 1, 40, 840),
+                              220.0,
+                      (float)juce::jmap(i,     0, audioProcessor.scopeSize - 1, 40, 840),
+                              juce::jmap(audioProcessor.scopeData[i],     0.0f, 1.0f, 220.0f, 40.0f) });
     }
 }

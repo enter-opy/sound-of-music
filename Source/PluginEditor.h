@@ -44,7 +44,7 @@ public:
 
 
 class SoundofmusicAudioProcessorEditor  : public juce::AudioProcessorEditor,
-    Slider::Listener
+    Slider::Listener, Timer
 {
 public:
     SoundofmusicAudioProcessorEditor (SoundofmusicAudioProcessor&);
@@ -54,12 +54,22 @@ public:
     void paint (juce::Graphics&) override;
     void resized() override;
 
-    void sliderValueChanged(Slider* slider) override;
-    void sliderDragStarted(Slider* slider) override;
-    void sliderDragEnded(Slider* slider) override;
+    void sliderValueChanged(Slider*) override;
+    void sliderDragStarted(Slider*) override;
+    void sliderDragEnded(Slider*) override;
+
+    void drawNextFrameOfSpectrum();
+    void drawFrame(juce::Graphics&);
+
+    void timerCallback() override;
+
+    juce::Rectangle<int> spectrumRect;
 
 private:
     SoundofmusicAudioProcessor& audioProcessor;
+
+    juce::dsp::FFT forwardFFT;
+    juce::dsp::WindowingFunction<float> window;
 
     Slider crushSlider;
     Slider downSampleSlider;
@@ -87,12 +97,18 @@ private:
     SliderLookAndFeel monoLookAndFeel;
     SliderLookAndFeel mixLookAndFeel;
 
-    Label monoLabel;
-    Label mixLabel;
+    Label monoName;
+    Label mixName;
+
+    Label monoIndicator;
+    Label mixIndicator;
 
     Spectrum spectrum;
 
+    Rectangle<float> temp;
+
     Rectangle<float> distortionArea;
+    Rectangle<float> spectrumArea;
 
 public:
     std::unique_ptr <AudioProcessorValueTreeState::SliderAttachment> crushValue;

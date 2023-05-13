@@ -71,18 +71,32 @@ public:
     void changeProgramName (int index, const juce::String& newName) override;
 
     //==============================================================================
-    void getStateInformation (juce::MemoryBlock& destData) override;
-    void setStateInformation (const void* data, int sizeInBytes) override;
+    void getStateInformation (juce::MemoryBlock&) override;
+    void setStateInformation (const void*, int) override;
 
     double getValue(int);
+    void pushNextSampleIntoFifo(float) noexcept;
 
     AudioProcessorValueTreeState treeState;
 
+    enum
+    {
+        fftOrder = 11,
+        fftSize = 1 << fftOrder,
+        scopeSize = 512
+    };
+
+    float fifo[fftSize];
+    float fftData[2 * fftSize];
+    int fifoIndex = 0;
+    bool nextFFTBlockReady = false;
+    float scopeData[scopeSize];
+
 private:
-    float drySample;
-    float wetSample;
-    float leftSample;
-    float rightSample;
+    float dry;
+    float wet;
+    float left;
+    float right;
 
     float samplerate;
 

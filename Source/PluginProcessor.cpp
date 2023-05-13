@@ -203,11 +203,13 @@ void SoundofmusicAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
 
     // stereo width is reduced here
     for (int sample = 0; sample < buffer.getNumSamples(); sample++) {
-        leftSample = (1 - mono) * leftchannelData[sample] + mono * rightchannelData[sample];
-        rightSample = mono * leftchannelData[sample] + (1 - mono) * rightchannelData[sample];
+        pushNextSampleIntoFifo((leftchannelData[sample] + rightchannelData[sample]) * 0.5);
 
-        leftchannelData[sample] = (1 - mix) * leftchannelData[sample] + mix * leftSample;
-        rightchannelData[sample] = (1 - mix) * rightchannelData[sample] + mix * rightSample;
+        left = (1 - mono) * leftchannelData[sample] + mono * rightchannelData[sample];
+        right = mono * leftchannelData[sample] + (1 - mono) * rightchannelData[sample];
+
+        leftchannelData[sample] = (1 - mix) * leftchannelData[sample] + mix * left;
+        rightchannelData[sample] = (1 - mix) * rightchannelData[sample] + mix * right;
     }
 
     for (int channel = 0; channel < totalNumInputChannels; ++channel)
@@ -215,37 +217,52 @@ void SoundofmusicAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
         float* channelData = buffer.getWritePointer(channel);
 
         for (int sample = 0; sample < buffer.getNumSamples(); ) {
-            drySample = channelData[sample];
+            dry = channelData[sample];
 
             // bitcrushing happens here
-            wetSample = round((drySample)*crush) / crush;
+            wet = round((dry)*crush) / crush;
 
             // jitter is added here
-            wetSample += (random.nextInt(3) - 1) * noise * drySample;
+            wet += (random.nextInt(3) - 1) * noise * dry;
             if (crackle > 0) {
                 if (random.nextInt(100 - crackle + 2) == 0) {
                     if (random.nextInt(10) != 0) {
-                        wetSample = 0.0;
+                        wet = 0.0;
                     }
                 }
             }
 
             // clipping happens here
-            if (wetSample >= clip) {
-                wetSample = clip;
+            if (wet >= clip) {
+                wet = clip;
             }
-            else if (wetSample <= -clip) {
-                wetSample = -clip;
+            else if (wet <= -clip) {
+                wet = -clip;
             }
-            wetSample *= 1 / clip;
+            wet *= 1 / clip;
 
             // downsampling happens here
             for (int i = 0; i < step && sample < buffer.getNumSamples(); i++, sample++) {
                 // mix is applied here
-                channelData[sample] = (1 - mix) * channelData[sample] + mix * wetSample;
+                channelData[sample] = (1 - mix) * dry + mix * wet;
             }
         }
     }
+}
+
+void SoundofmusicAudioProcessor::pushNextSampleIntoFifo(float sample) noexcept
+{
+    if (fifoIndex == fftSize)
+    {
+        if (!nextFFTBlockReady)
+        {
+            juce::zeromem(fftData, sizeof(fftData));
+            memcpy(fftData, fifo, sizeof(fifo));
+            nextFFTBlockReady = true;
+        }
+        fifoIndex = 0;
+    }
+    fifo[fifoIndex++] = sample;
 }
 
 //==============================================================================

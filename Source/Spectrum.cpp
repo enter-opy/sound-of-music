@@ -58,8 +58,7 @@ Spectrum::~Spectrum()
 
 void Spectrum::paint (juce::Graphics& g)
 {
-    g.setColour(Colour::fromRGB(0x0B, 0x0D, 0x11));
-    g.fillRect(area);
+    g.setColour(Colour::fromRGB(0x0B, 0x0D, 0x15));
 
     g.setColour(Colours::white);
     g.fillRect(marker80Hz);
@@ -75,19 +74,19 @@ void Spectrum::resized()
 {
     area.setBounds(0, 0, 800, 180);
 
-    marker80Hz.setBounds(161, 0, 1, 180);
-    marker300Hz.setBounds(314, 0, 1, 180);
-    marker1kHz.setBounds(454, 0, 1, 180);
-    marker5kHz.setBounds(640, 0, 1, 180);
-    marker10kHz.setBounds(720, 0, 1, 180);
+    marker80Hz.setBounds(159, 175, 4, 10);
+    marker300Hz.setBounds(312, 175, 4, 10);
+    marker1kHz.setBounds(452, 175, 4, 10);
+    marker5kHz.setBounds(638, 175, 4, 10);
+    marker10kHz.setBounds(718, 175, 4, 10);
 
-    label20Hz.setBounds(-5, 185, 60, 20);
-    label80Hz.setBounds(131, 185, 60, 20);
-    label300Hz.setBounds(284, 185, 60, 20);
-    label1kHz.setBounds(424, 185, 60, 20);
-    label5kHz.setBounds(600, 185, 60, 20);
-    label10kHz.setBounds(690, 185, 60, 20);
-    label20kHz.setBounds(745, 185, 60, 20);
+    label20Hz.setBounds(-5, 190, 60, 20);
+    label80Hz.setBounds(131, 190, 60, 20);
+    label300Hz.setBounds(284, 190, 60, 20);
+    label1kHz.setBounds(424, 190, 60, 20);
+    label5kHz.setBounds(600, 190, 60, 20);
+    label10kHz.setBounds(690, 190, 60, 20);
+    label20kHz.setBounds(745, 190, 60, 20);
 }
 
 void Spectrum::mouseDown(const MouseEvent& event)

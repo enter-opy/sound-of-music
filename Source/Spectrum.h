@@ -25,7 +25,7 @@ public:
     void paint (juce::Graphics&) override;
     void resized() override;
 
-    void mouseDown(const MouseEvent& event) override;
+    void mouseDown(const MouseEvent&) override;
 
 private:
     Rectangle<float> area;
