@@ -11,6 +11,7 @@
 #pragma once
 
 #include <JuceHeader.h>
+#include "PluginProcessor.h"
 
 //==============================================================================
 /*
@@ -28,6 +29,20 @@ public:
 
 private:
     Rectangle<float> area;
+
+    Rectangle<float> marker80Hz;
+    Rectangle<float> marker300Hz;
+    Rectangle<float> marker1kHz;
+    Rectangle<float> marker5kHz;
+    Rectangle<float> marker10kHz;
+
+    Label label20Hz;
+    Label label80Hz;
+    Label label300Hz;
+    Label label1kHz;
+    Label label5kHz;
+    Label label10kHz;
+    Label label20kHz;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Spectrum)
 };

@@ -55,28 +55,38 @@ public:
     void resized() override;
 
     void sliderValueChanged(Slider* slider) override;
+    void sliderDragStarted(Slider* slider) override;
+    void sliderDragEnded(Slider* slider) override;
 
 private:
     SoundofmusicAudioProcessor& audioProcessor;
 
-    Slider bitdepthSlider;
-    Slider samplerateSlider;
+    Slider crushSlider;
+    Slider downSampleSlider;
     Slider jitterSlider;
-    Slider clipCeilingSlider;
+    Slider clipSlider;
+
+    SliderLookAndFeel crushLookAndFeel;
+    SliderLookAndFeel downSampleLookAndFeel;
+    SliderLookAndFeel jitterLookAndFeel;
+    SliderLookAndFeel clipLookAndFeel;
+
+    Label crushName;
+    Label downSampleName;
+    Label jitterName;
+    Label clipName;
+
+    Label crushIndicator;
+    Label downSampleIndicator;
+    Label jitterIndicator;
+    Label clipIndicator;
+
     Slider monoSlider;
     Slider mixSlider;
 
-    SliderLookAndFeel bitdepthLookAndFeel;
-    SliderLookAndFeel samplerateLookAndFeel;
-    SliderLookAndFeel jitterLookAndFeel;
-    SliderLookAndFeel clipCeilingLookAndFeel;
     SliderLookAndFeel monoLookAndFeel;
     SliderLookAndFeel mixLookAndFeel;
 
-    Label bitdepthLabel;
-    Label samplerateLabel;
-    Label jitterLabel;
-    Label clipCeilingLabel;
     Label monoLabel;
     Label mixLabel;
 
@@ -85,10 +95,11 @@ private:
     Rectangle<float> distortionArea;
 
 public:
-    std::unique_ptr <AudioProcessorValueTreeState::SliderAttachment> bitdepthValue;
-    std::unique_ptr <AudioProcessorValueTreeState::SliderAttachment> samplerateValue;
+    std::unique_ptr <AudioProcessorValueTreeState::SliderAttachment> crushValue;
+    std::unique_ptr <AudioProcessorValueTreeState::SliderAttachment> downSampleValue;
     std::unique_ptr <AudioProcessorValueTreeState::SliderAttachment> jitterValue;
-    std::unique_ptr <AudioProcessorValueTreeState::SliderAttachment> clipCeilingValue;
+    std::unique_ptr <AudioProcessorValueTreeState::SliderAttachment> clipValue;
+
     std::unique_ptr <AudioProcessorValueTreeState::SliderAttachment> monoValue;
     std::unique_ptr <AudioProcessorValueTreeState::SliderAttachment> mixValue;
 
