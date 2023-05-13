@@ -75,7 +75,8 @@ public:
     void setStateInformation (const void*, int) override;
 
     double getValue(int);
-    void pushNextSampleIntoFifo(float) noexcept;
+    void pushNextSampleIntoFifoIn(float) noexcept;
+    void pushNextSampleIntoFifoOut(float) noexcept;
 
     AudioProcessorValueTreeState treeState;
 
@@ -86,11 +87,17 @@ public:
         scopeSize = 512
     };
 
-    float fifo[fftSize];
-    float fftData[2 * fftSize];
-    int fifoIndex = 0;
-    bool nextFFTBlockReady = false;
-    float scopeData[scopeSize];
+    float fifoIn[fftSize];
+    float fftDataIn[2 * fftSize];
+    int fifoInIndex = 0;
+    bool nextFFTBlockReadyIn = false;
+    float scopeDataIn[scopeSize];
+
+    float fifoOut[fftSize];
+    float fftDataOut[2 * fftSize];
+    int fifoOutIndex = 0;
+    bool nextFFTBlockReadyOut = false;
+    float scopeDataOut[scopeSize];
 
 private:
     float dry;

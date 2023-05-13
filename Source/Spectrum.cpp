@@ -57,8 +57,10 @@ Spectrum::~Spectrum()
 }
 
 void Spectrum::paint (juce::Graphics& g)
-{
-    g.setColour(Colour::fromRGB(0x0B, 0x0D, 0x15));
+{   
+    ColourGradient gradientOutSplitter(Colour::fromRGBA(0xAB, 0x06, 0x4D, 127), 0, 0, Colour::fromRGBA(0x17, 0x7B, 0xC3, 127), 800, 0, false);
+    g.setGradientFill(gradientOutSplitter);
+    g.fillRect(splitter);
 
     g.setColour(Colours::white);
     g.fillRect(marker80Hz);
@@ -68,11 +70,16 @@ void Spectrum::paint (juce::Graphics& g)
     g.fillRect(marker10kHz);
 
     g.drawRect(area);
+
+    for (Rectangle<int> rect: dividers) {
+        g.drawRect(rect);
+    }
 }
 
 void Spectrum::resized()
 {
     area.setBounds(0, 0, 800, 180);
+    splitter.setBounds(0, 0, 800, 40);
 
     marker80Hz.setBounds(159, 175, 4, 10);
     marker300Hz.setBounds(312, 175, 4, 10);
@@ -91,8 +98,19 @@ void Spectrum::resized()
 
 void Spectrum::mouseDown(const MouseEvent& event)
 {
-    int x = event.getMouseDownX();
-    int y = mapToLog10(x / 800.0, 20.0, 20000.0);
-    DBG(x);
-    DBG(y);
+    if (event.getMouseDownY() < 40 && dividers.size() < 5) {
+        int mouseX = event.getMouseDownX();
+        int frequency = mapToLog10(mouseX / 800.0, 20.0, 20000.0);
+
+        bands.push_back(frequency);
+        sort(bands.begin(), bands.end());
+
+        for (auto z : bands) {
+            DBG(" ");
+            DBG(z);
+        }
+
+        dividers.push_back(Rectangle<int>::Rectangle(mouseX, 0, 1, 180));
+    }
+    
 }

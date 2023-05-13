@@ -201,15 +201,8 @@ void SoundofmusicAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
     float* leftchannelData = buffer.getWritePointer(0);
     float* rightchannelData = buffer.getWritePointer(1);
 
-    // stereo width is reduced here
     for (int sample = 0; sample < buffer.getNumSamples(); sample++) {
-        pushNextSampleIntoFifo((leftchannelData[sample] + rightchannelData[sample]) * 0.5);
-
-        left = (1 - mono) * leftchannelData[sample] + mono * rightchannelData[sample];
-        right = mono * leftchannelData[sample] + (1 - mono) * rightchannelData[sample];
-
-        leftchannelData[sample] = (1 - mix) * leftchannelData[sample] + mix * left;
-        rightchannelData[sample] = (1 - mix) * rightchannelData[sample] + mix * right;
+        pushNextSampleIntoFifoIn((leftchannelData[sample] + rightchannelData[sample]) * 0.5);
     }
 
     for (int channel = 0; channel < totalNumInputChannels; ++channel)
@@ -248,21 +241,46 @@ void SoundofmusicAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
             }
         }
     }
+
+    for (int sample = 0; sample < buffer.getNumSamples(); sample++) {
+        pushNextSampleIntoFifoOut((leftchannelData[sample] + rightchannelData[sample]) * 0.5);
+
+        left = (1 - mono) * leftchannelData[sample] + mono * rightchannelData[sample];
+        right = mono * leftchannelData[sample] + (1 - mono) * rightchannelData[sample];
+
+        leftchannelData[sample] = (1 - mix) * leftchannelData[sample] + mix * left;
+        rightchannelData[sample] = (1 - mix) * rightchannelData[sample] + mix * right;
+    }
 }
 
-void SoundofmusicAudioProcessor::pushNextSampleIntoFifo(float sample) noexcept
+void SoundofmusicAudioProcessor::pushNextSampleIntoFifoIn(float sample) noexcept
 {
-    if (fifoIndex == fftSize)
+    if (fifoInIndex == fftSize)
     {
-        if (!nextFFTBlockReady)
+        if (!nextFFTBlockReadyIn)
         {
-            juce::zeromem(fftData, sizeof(fftData));
-            memcpy(fftData, fifo, sizeof(fifo));
-            nextFFTBlockReady = true;
+            juce::zeromem(fftDataIn, sizeof(fftDataIn));
+            memcpy(fftDataIn, fifoIn, sizeof(fifoIn));
+            nextFFTBlockReadyIn = true;
         }
-        fifoIndex = 0;
+        fifoInIndex = 0;
     }
-    fifo[fifoIndex++] = sample;
+    fifoIn[fifoInIndex++] = sample;
+}
+
+void SoundofmusicAudioProcessor::pushNextSampleIntoFifoOut(float sample) noexcept
+{
+    if (fifoOutIndex == fftSize)
+    {
+        if (!nextFFTBlockReadyOut)
+        {
+            juce::zeromem(fftDataOut, sizeof(fftDataOut));
+            memcpy(fftDataOut, fifoOut, sizeof(fifoOut));
+            nextFFTBlockReadyOut = true;
+        }
+        fifoOutIndex = 0;
+    }
+    fifoOut[fifoOutIndex++] = sample;
 }
 
 //==============================================================================

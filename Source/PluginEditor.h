@@ -58,7 +58,8 @@ public:
     void sliderDragStarted(Slider*) override;
     void sliderDragEnded(Slider*) override;
 
-    void drawNextFrameOfSpectrum();
+    void drawNextFrameOfInSpectrum();
+    void drawNextFrameOfOutSpectrum();
     void drawFrame(juce::Graphics&);
 
     void timerCallback() override;
@@ -68,7 +69,8 @@ public:
 private:
     SoundofmusicAudioProcessor& audioProcessor;
 
-    juce::dsp::FFT forwardFFT;
+    juce::dsp::FFT forwardFFTIn;
+    juce::dsp::FFT forwardFFTOut;
     juce::dsp::WindowingFunction<float> window;
 
     Slider crushSlider;
@@ -107,8 +109,9 @@ private:
 
     Rectangle<float> temp;
 
-    Rectangle<float> distortionArea;
     Rectangle<float> spectrumArea;
+    Rectangle<float> distortionArea;
+    Rectangle<float> outputArea;
 
 public:
     std::unique_ptr <AudioProcessorValueTreeState::SliderAttachment> crushValue;
