@@ -10,17 +10,17 @@
 
 #include <JuceHeader.h>
 
-#define BITDEPTH_ID "bitdepth"
-#define BITDEPTH_NAME "Bitdepth"
+#define CRUSH_ID "crush"
+#define CRUSH_NAME "Crush"
 
-#define SAMPLERATE_ID "samplerate"
-#define SAMPLERATE_NAME "Samplerate"
+#define DOWNSAMPLE_ID "downsample"
+#define DOWNSAMPLE_NAME "Downsample"
 
 #define JITTER_ID "jitter"
 #define JITTER_NAME "Jitter"
 
-#define CLIPCELING_ID "clipceiling"
-#define CLIPCELING_NAME "Clip Ceiling"
+#define CLIP_ID "clip"
+#define CLIP_NAME "Clip"
 
 #define MIX_ID "mix"
 #define MIX_NAME "Mix"
@@ -88,10 +88,11 @@ private:
 
     Random random;
 
-    float bitdepth_;
-    float samplerate_;
-    float jitter_;
-    float clip_;
+    float crushRaw;
+    float downSampleRaw;
+    float jitterRaw;
+    float clipRaw;
+
     float mono_;
     float mix_;
 

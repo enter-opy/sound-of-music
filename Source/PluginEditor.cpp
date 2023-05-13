@@ -15,20 +15,20 @@ SoundofmusicAudioProcessorEditor::SoundofmusicAudioProcessorEditor (Soundofmusic
 {
     setSize(880, 520);
 
-    bitdepthValue = std::make_unique<AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.treeState, BITDEPTH_ID, bitdepthSlider);
-    samplerateValue = std::make_unique<AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.treeState, SAMPLERATE_ID, samplerateSlider);
+    bitdepthValue = std::make_unique<AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.treeState, CRUSH_ID, bitdepthSlider);
+    samplerateValue = std::make_unique<AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.treeState, DOWNSAMPLE_ID, samplerateSlider);
     jitterValue = std::make_unique<AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.treeState, JITTER_ID, jitterSlider);
-    clipCeilingValue = std::make_unique<AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.treeState, CLIPCELING_ID, clipCeilingSlider);
+    clipCeilingValue = std::make_unique<AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.treeState, CLIP_ID, clipCeilingSlider);
     monoValue = std::make_unique<AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.treeState, MONO_ID, monoSlider);
     mixValue = std::make_unique<AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.treeState, MIX_ID, mixSlider);
 
     addAndMakeVisible(spectrum);
 
     bitdepthSlider.setSliderStyle(Slider::RotaryVerticalDrag);
-    bitdepthSlider.setRange(2.0, 32.0, 1.0);
+    bitdepthSlider.setRange(0.0, 100.0, 1.0);
     bitdepthSlider.setValue(audioProcessor.getValue(0));
     bitdepthSlider.setTextBoxStyle(Slider::NoTextBox, false, 0, 0);
-    bitdepthLabel.setText("BITDEPTH", dontSendNotification);
+    bitdepthLabel.setText("CRUSH", dontSendNotification);
     bitdepthLabel.setJustificationType(Justification::centred);
     bitdepthLabel.setColour(Label::textColourId, Colour::fromRGB(0xB1, 0x2E, 0x82));
     addAndMakeVisible(&bitdepthLabel);
@@ -38,10 +38,10 @@ SoundofmusicAudioProcessorEditor::SoundofmusicAudioProcessorEditor (Soundofmusic
     addAndMakeVisible(&bitdepthSlider);
 
     samplerateSlider.setSliderStyle(Slider::RotaryVerticalDrag);
-    samplerateSlider.setRange(1102.5, 44100.0, 1.0);
+    samplerateSlider.setRange(0.0, 100.0, 1.0);
     samplerateSlider.setValue(audioProcessor.getValue(1));
     samplerateSlider.setTextBoxStyle(Slider::NoTextBox, false, 0, 0);
-    samplerateLabel.setText("SAMPLERATE", dontSendNotification);
+    samplerateLabel.setText("DOWNSAMPLE", dontSendNotification);
     samplerateLabel.setJustificationType(Justification::centred);
     samplerateLabel.setColour(Label::textColourId, Colour::fromRGB(0xB1, 0x2E, 0x82));
     addAndMakeVisible(&samplerateLabel);
@@ -139,16 +139,16 @@ void SoundofmusicAudioProcessorEditor::resized()
 
 void SoundofmusicAudioProcessorEditor::sliderValueChanged(Slider* slider) {
     if (slider == &bitdepthSlider) {
-        bitdepthLookAndFeel.colourPosition = 75.0 / 30.0 * (bitdepthSlider.getValue() - 2.0);
+        bitdepthLookAndFeel.colourPosition = 90.0 / 100.0 * (bitdepthSlider.getValue());
     }
     else if (slider == &samplerateSlider) {
-        samplerateLookAndFeel.colourPosition = 75.0 / 42997.5 * (samplerateSlider.getValue() - 1102.5);
+        samplerateLookAndFeel.colourPosition = 90.0 / 100.0 * (samplerateSlider.getValue());
     }
     else if (slider == &jitterSlider) {
-        jitterLookAndFeel.colourPosition = 75.0 / 100.0 * (jitterSlider.getValue());
+        jitterLookAndFeel.colourPosition = 90.0 / 100.0 * (jitterSlider.getValue());
     }
     else if (slider == &clipCeilingSlider) {
-        clipCeilingLookAndFeel.colourPosition = 75.0 / 15.0 * (clipCeilingSlider.getValue() + 15);
+        clipCeilingLookAndFeel.colourPosition = 90.0 / 15.0 * (clipCeilingSlider.getValue() + 15);
     }
     else if (slider == &monoSlider) {
         monoLookAndFeel.colourPosition = 90.0 / 100.0 * (monoSlider.getValue());

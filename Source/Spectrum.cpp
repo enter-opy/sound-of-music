@@ -37,6 +37,7 @@ void Spectrum::resized()
 void Spectrum::mouseDown(const MouseEvent& event)
 {
     int x = event.getMouseDownX();
-    DBG(x);
+    int y = mapToLog10(x / 800.0, 20.0, 20000.0);
+    DBG(y);
 }
 

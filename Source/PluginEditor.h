@@ -20,17 +20,6 @@ class SliderLookAndFeel : public LookAndFeel_V4 {
 public:
     float colourPosition;
 
-    void drawLinearSlider(Graphics& g, int x, int y, int width, int height, float sliderPos, float minSliderPos, float maxSliderPos, const Slider::SliderStyle sliderStyle, Slider& slider) override {
-        Rectangle<float> area(x, y, width, height);
-        Rectangle<float> track(x, sliderPos, width, height);
-
-        ColourGradient gradient(Colour::fromRGB(0x37, 0x9B, 0xE3), x + height / 2, y, Colour::fromRGB(0xCB, 0x16, 0x6D), x + height / 2, y + height, false);
-
-        g.setGradientFill(gradient);
-        g.fillRect(track);
-        g.drawRect(area);
-    }
-
     void drawRotarySlider(Graphics& g, int x, int y, int width, int height, float sliderPos, float rotatoryStartAngle, float rotatoryEndAngle, juce::Slider& slider) override {
         float diameter = jmin(width - 5, height - 5);
         float radius = diameter / 2;

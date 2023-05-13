@@ -22,18 +22,18 @@ SoundofmusicAudioProcessor::SoundofmusicAudioProcessor()
                        ),
     treeState(*this, nullptr, "PARAMETER",
         {
-            std::make_unique<AudioParameterFloat>(BITDEPTH_ID, BITDEPTH_NAME, 2.0, 32.0, 32.0),
-            std::make_unique<AudioParameterFloat>(SAMPLERATE_ID, SAMPLERATE_NAME, 1102.5, 44100.0, 44100.0),
+            std::make_unique<AudioParameterFloat>(CRUSH_ID, CRUSH_NAME, 0.0, 100.0, 0.0),
+            std::make_unique<AudioParameterFloat>(DOWNSAMPLE_ID, DOWNSAMPLE_NAME, 0.0, 100.0, 0.0),
             std::make_unique<AudioParameterFloat>(JITTER_ID, JITTER_NAME, 0.0, 100.0, 0.0),
-            std::make_unique<AudioParameterFloat>(CLIPCELING_ID, CLIPCELING_NAME, -15.0, 0.0, 0.0),
+            std::make_unique<AudioParameterFloat>(CLIP_ID, CLIP_NAME, -15.0, 0.0, 0.0),
             std::make_unique<AudioParameterFloat>(MONO_ID, MONO_NAME, 0.0, 100.0, 0.0),
             std::make_unique<AudioParameterFloat>(MIX_ID, MIX_NAME, 0.0, 100.0, 100.0)
         }
     ),
-    bitdepth_(32.0),
-    samplerate_(44100.0),
-    jitter_(0.0),
-    clip_(0.0),
+    crushRaw(0.0),
+    downSampleRaw(0.0),
+    jitterRaw(0.0),
+    clipRaw(0.0),
     mono_(0.0),
     mix_(100.0)
 #endif
@@ -147,16 +147,16 @@ bool SoundofmusicAudioProcessor::isBusesLayoutSupported (const BusesLayout& layo
 
 double SoundofmusicAudioProcessor::getValue(int slider) {
     if (slider == 0) {
-        return bitdepth_;
+        return crushRaw;
     }
     else if (slider == 1) {
-        return samplerate_;
+        return downSampleRaw;
     }
     else if (slider == 2) {
-        return jitter_;
+        return jitterRaw;
     }
     else if (slider == 3) {
-        return clip_;
+        return clipRaw;
     }
     else if (slider == 5) {
         return mono_;
@@ -175,22 +175,28 @@ void SoundofmusicAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
         buffer.clear(i, 0, buffer.getNumSamples());
 
     // getting parameters
-    bitdepth_ = *treeState.getRawParameterValue(BITDEPTH_ID);
-    samplerate_ = *treeState.getRawParameterValue(SAMPLERATE_ID);
-    jitter_ = *treeState.getRawParameterValue(JITTER_ID);
-    clip_ = *treeState.getRawParameterValue(CLIPCELING_ID);
+    crushRaw = *treeState.getRawParameterValue(CRUSH_ID);
+    downSampleRaw = *treeState.getRawParameterValue(DOWNSAMPLE_ID);
+    jitterRaw = *treeState.getRawParameterValue(JITTER_ID);
+    clipRaw = *treeState.getRawParameterValue(CLIP_ID);
+
     mono_ = *treeState.getRawParameterValue(MONO_ID);
     mix_ = *treeState.getRawParameterValue(MIX_ID);
 
-    int bitdepth = pow(2, *treeState.getRawParameterValue(BITDEPTH_ID)) / 2;
-    int newSamplerate = *treeState.getRawParameterValue(SAMPLERATE_ID);
-    float jitter = *treeState.getRawParameterValue(JITTER_ID) / 100.0;
-    int crackle = *treeState.getRawParameterValue(JITTER_ID);
-    float clipCeiling = Decibels::decibelsToGain((float)*treeState.getRawParameterValue(CLIPCELING_ID));
+    int crushMap = mapToLog10((100.0 - crushRaw) / 100.0, 2.0, 32.0);
+    int crush = pow(2, crushMap);
+    
+    int downSample = mapToLog10((100.0 - downSampleRaw) / 100.0, 441.0, 44101.0);
+
+    float noise = jitterRaw / 100.0;
+    int crackle = jitterRaw;
+
+    float clip = Decibels::decibelsToGain(clipRaw);
+
     float mono = *treeState.getRawParameterValue(MONO_ID) / 200.0;
     float mix = *treeState.getRawParameterValue(MIX_ID) / 100.0;
 
-    int step = samplerate / newSamplerate;
+    int step = samplerate / downSample;
 
     float* leftchannelData = buffer.getWritePointer(0);
     float* rightchannelData = buffer.getWritePointer(1);
@@ -211,34 +217,29 @@ void SoundofmusicAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
         for (int sample = 0; sample < buffer.getNumSamples(); ) {
             drySample = channelData[sample];
 
-            // bitdepth reduction happens here
-            wetSample = round((drySample)*bitdepth) / bitdepth;
+            // bitcrushing happens here
+            wetSample = round((drySample)*crush) / crush;
 
             // jitter is added here
-            wetSample += (random.nextInt(3) - 1) * jitter * drySample;
-
-            // hard clipping happens here
-            if (wetSample >= clipCeiling) {
-                wetSample = clipCeiling;
-            }
-            else if (wetSample <= -clipCeiling) {
-                wetSample = -clipCeiling;
-            }
-            wetSample *= 1 / clipCeiling;
-
-            // crackles are added here
+            wetSample += (random.nextInt(3) - 1) * noise * drySample;
             if (crackle > 0) {
                 if (random.nextInt(100 - crackle + 2) == 0) {
-                    if (random.nextInt(10) == 0) {
-                        wetSample = -wetSample;
-                    }
-                    else {
+                    if (random.nextInt(10) != 0) {
                         wetSample = 0.0;
                     }
                 }
             }
 
-            // sample rate reduction happens here
+            // clipping happens here
+            if (wetSample >= clip) {
+                wetSample = clip;
+            }
+            else if (wetSample <= -clip) {
+                wetSample = -clip;
+            }
+            wetSample *= 1 / clip;
+
+            // downsampling happens here
             for (int i = 0; i < step && sample < buffer.getNumSamples(); i++, sample++) {
                 // mix is applied here
                 channelData[sample] = (1 - mix) * channelData[sample] + mix * wetSample;
