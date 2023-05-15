@@ -22,20 +22,36 @@ SoundofmusicAudioProcessor::SoundofmusicAudioProcessor()
                        ),
     treeState(*this, nullptr, "PARAMETER",
         {
-            std::make_unique<AudioParameterFloat>(CRUSH_ID, CRUSH_NAME, 0.0, 100.0, 0.0),
-            std::make_unique<AudioParameterFloat>(DOWNSAMPLE_ID, DOWNSAMPLE_NAME, 0.0, 100.0, 0.0),
-            std::make_unique<AudioParameterFloat>(JITTER_ID, JITTER_NAME, 0.0, 100.0, 0.0),
-            std::make_unique<AudioParameterFloat>(CLIP_ID, CLIP_NAME, -15.0, 0.0, 0.0),
+            std::make_unique<AudioParameterFloat>(CRUSHLOW_ID, CRUSHLOW_NAME, 0.0, 100.0, 0.0),
+            std::make_unique<AudioParameterFloat>(DOWNSAMPLELOW_ID, DOWNSAMPLELOW_NAME, 0.0, 100.0, 0.0),
+            std::make_unique<AudioParameterFloat>(JITTERLOW_ID, JITTERLOW_NAME, 0.0, 100.0, 0.0),
+            std::make_unique<AudioParameterFloat>(CLIPLOW_ID, CLIPLOW_NAME, -15.0, 0.0, 0.0),
+            std::make_unique<AudioParameterFloat>(CRUSHMID_ID, CRUSHMID_NAME, 0.0, 100.0, 0.0),
+            std::make_unique<AudioParameterFloat>(DOWNSAMPLEMID_ID, DOWNSAMPLEMID_NAME, 0.0, 100.0, 0.0),
+            std::make_unique<AudioParameterFloat>(JITTERMID_ID, JITTERMID_NAME, 0.0, 100.0, 0.0),
+            std::make_unique<AudioParameterFloat>(CLIPMID_ID, CLIPMID_NAME, -15.0, 0.0, 0.0),
+            std::make_unique<AudioParameterFloat>(CRUSHHIGH_ID, CRUSHHIGH_NAME, 0.0, 100.0, 0.0),
+            std::make_unique<AudioParameterFloat>(DOWNSAMPLEHIGH_ID, DOWNSAMPLEHIGH_NAME, 0.0, 100.0, 0.0),
+            std::make_unique<AudioParameterFloat>(JITTERHIGH_ID, JITTERHIGH_NAME, 0.0, 100.0, 0.0),
+            std::make_unique<AudioParameterFloat>(CLIPHIGH_ID, CLIPHIGH_NAME, -15.0, 0.0, 0.0),
             std::make_unique<AudioParameterFloat>(MONO_ID, MONO_NAME, 0.0, 100.0, 0.0),
             std::make_unique<AudioParameterFloat>(MIX_ID, MIX_NAME, 0.0, 100.0, 100.0)
         }
     ),
-    crushRaw(0.0),
-    downSampleRaw(0.0),
-    jitterRaw(0.0),
-    clipRaw(0.0),
-    mono_(0.0),
-    mix_(100.0)
+    crushRawLow(0.0),
+    downSampleRawLow(0.0),
+    jitterRawLow(0.0),
+    clipRawLow(0.0),
+    crushRawMid(0.0),
+    downSampleRawMid(0.0),
+    jitterRawMid(0.0),
+    clipRawMid(0.0),
+    crushRawHigh(0.0),
+    downSampleRawHigh(0.0),
+    jitterRawHigh(0.0),
+    clipRawHigh(0.0),
+    monoRaw(0.0),
+    mixRaw(100.0)
 #endif
 {
     treeState.state = ValueTree("savedParams");
@@ -147,22 +163,49 @@ bool SoundofmusicAudioProcessor::isBusesLayoutSupported (const BusesLayout& layo
 
 double SoundofmusicAudioProcessor::getValue(int slider) {
     if (slider == 0) {
-        return crushRaw;
+        return crushRawLow;
     }
     else if (slider == 1) {
-        return downSampleRaw;
+        return downSampleRawLow;
     }
     else if (slider == 2) {
-        return jitterRaw;
+        return jitterRawLow;
     }
     else if (slider == 3) {
-        return clipRaw;
+        return clipRawLow;
+    }
+
+    else if (slider == 4) {
+        return crushRawMid;
     }
     else if (slider == 5) {
-        return mono_;
+        return downSampleRawMid;
     }
     else if (slider == 6) {
-        return mix_;
+        return jitterRawMid;
+    }
+    else if (slider == 7) {
+        return clipRawMid;
+    }
+
+    else if (slider == 8) {
+        return crushRawHigh;
+    }
+    else if (slider == 9) {
+        return downSampleRawHigh;
+    }
+    else if (slider == 10) {
+        return jitterRawHigh;
+    }
+    else if (slider == 11) {
+        return clipRawHigh;
+    }
+
+    else if (slider == 12) {
+        return monoRaw;
+    }
+    else if (slider == 13) {
+        return mixRaw;
     }
 }
 
@@ -175,28 +218,51 @@ void SoundofmusicAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
         buffer.clear(i, 0, buffer.getNumSamples());
 
     // getting parameters
-    crushRaw = *treeState.getRawParameterValue(CRUSH_ID);
-    downSampleRaw = *treeState.getRawParameterValue(DOWNSAMPLE_ID);
-    jitterRaw = *treeState.getRawParameterValue(JITTER_ID);
-    clipRaw = *treeState.getRawParameterValue(CLIP_ID);
+    crushRawLow = *treeState.getRawParameterValue(CRUSHLOW_ID);
+    downSampleRawLow = *treeState.getRawParameterValue(DOWNSAMPLELOW_ID);
+    jitterRawLow = *treeState.getRawParameterValue(JITTERLOW_ID);
+    clipRawLow = *treeState.getRawParameterValue(CLIPLOW_ID);
 
-    mono_ = *treeState.getRawParameterValue(MONO_ID);
-    mix_ = *treeState.getRawParameterValue(MIX_ID);
+    crushRawMid = *treeState.getRawParameterValue(CRUSHMID_ID);
+    downSampleRawMid = *treeState.getRawParameterValue(DOWNSAMPLEMID_ID);
+    jitterRawMid = *treeState.getRawParameterValue(JITTERMID_ID);
+    clipRawMid = *treeState.getRawParameterValue(CLIPMID_ID);
 
-    int crushMap = mapToLog10((100.0 - crushRaw) / 100.0, 2.0, 32.0);
-    int crush = pow(2, crushMap);
+    crushRawHigh = *treeState.getRawParameterValue(CRUSHHIGH_ID);
+    downSampleRawHigh = *treeState.getRawParameterValue(DOWNSAMPLEHIGH_ID);
+    jitterRawHigh = *treeState.getRawParameterValue(JITTERHIGH_ID);
+    clipRawHigh = *treeState.getRawParameterValue(CLIPHIGH_ID);
+
+    monoRaw = *treeState.getRawParameterValue(MONO_ID);
+    mixRaw = *treeState.getRawParameterValue(MIX_ID);
+
+    int crushMapLow = mapToLog10((100.0 - crushRawLow) / 100.0, 2.0, 32.0);
+    int crushLow = pow(2, crushMapLow);
+    int crushMapMid = mapToLog10((100.0 - crushRawMid) / 100.0, 2.0, 32.0);
+    int crushMid = pow(2, crushMapMid);
+    int crushMapHigh = mapToLog10((100.0 - crushRawHigh) / 100.0, 2.0, 32.0);
+    int crushHigh = pow(2, crushMapHigh);
     
-    int downSample = mapToLog10((100.0 - downSampleRaw) / 100.0, 441.0, 44101.0);
+    int downSampleLow = mapToLog10((100.0 - downSampleRawLow) / 100.0, 441.0, 44101.0);
+    int downSampleMid = mapToLog10((100.0 - downSampleRawMid) / 100.0, 441.0, 44101.0);
+    int downSampleHigh = mapToLog10((100.0 - downSampleRawHigh) / 100.0, 441.0, 44101.0);
+    int stepLow = samplerate / downSampleLow;
+    int stepMid = samplerate / downSampleMid;
+    int stepHigh = samplerate / downSampleHigh;
 
-    float noise = jitterRaw / 100.0;
-    int crackle = jitterRaw;
+    float noiseLow = jitterRawLow / 100.0;
+    int crackleLow = jitterRawLow;
+    float noiseMid = jitterRawMid / 100.0;
+    int crackleMid = jitterRawMid;
+    float noiseHigh = jitterRawHigh / 100.0;
+    int crackleHigh = jitterRawHigh;
 
-    float clip = Decibels::decibelsToGain(clipRaw);
+    float clipLow = Decibels::decibelsToGain(clipRawLow);
+    float clipMid = Decibels::decibelsToGain(clipRawMid);
+    float clipHigh = Decibels::decibelsToGain(clipRawHigh);
 
-    float mono = *treeState.getRawParameterValue(MONO_ID) / 200.0;
-    float mix = *treeState.getRawParameterValue(MIX_ID) / 100.0;
-
-    int step = samplerate / downSample;
+    float mono = monoRaw / 200.0;
+    float mix = mixRaw / 100.0;
 
     float* leftchannelData = buffer.getWritePointer(0);
     float* rightchannelData = buffer.getWritePointer(1);
@@ -213,12 +279,12 @@ void SoundofmusicAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
             dry = channelData[sample];
 
             // bitcrushing happens here
-            wet = round((dry)*crush) / crush;
+            wet = round((dry)*crushLow) / crushLow;
 
             // jitter is added here
-            wet += (random.nextInt(3) - 1) * noise * dry;
-            if (crackle > 0) {
-                if (random.nextInt(100 - crackle + 2) == 0) {
+            wet += (random.nextInt(3) - 1) * noiseLow * dry;
+            if (crackleLow > 0) {
+                if (random.nextInt(100 - crackleLow + 2) == 0) {
                     if (random.nextInt(10) != 0) {
                         wet = 0.0;
                     }
@@ -226,16 +292,16 @@ void SoundofmusicAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
             }
 
             // clipping happens here
-            if (wet >= clip) {
-                wet = clip;
+            if (wet >= clipLow) {
+                wet = clipLow;
             }
-            else if (wet <= -clip) {
-                wet = -clip;
+            else if (wet <= -clipLow) {
+                wet = -clipLow;
             }
-            wet *= 1 / clip;
+            wet *= 1 / clipLow;
 
             // downsampling happens here
-            for (int i = 0; i < step && sample < buffer.getNumSamples(); i++, sample++) {
+            for (int i = 0; i < stepLow && sample < buffer.getNumSamples(); i++, sample++) {
                 // mix is applied here
                 channelData[sample] = (1 - mix) * dry + mix * wet;
             }

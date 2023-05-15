@@ -10,17 +10,41 @@
 
 #include <JuceHeader.h>
 
-#define CRUSH_ID "crush"
-#define CRUSH_NAME "Crush"
+#define CRUSHLOW_ID "crushlow"
+#define CRUSHLOW_NAME "CrushLow"
 
-#define DOWNSAMPLE_ID "downsample"
-#define DOWNSAMPLE_NAME "Downsample"
+#define CRUSHMID_ID "crushmid"
+#define CRUSHMID_NAME "CrushMid"
 
-#define JITTER_ID "jitter"
-#define JITTER_NAME "Jitter"
+#define CRUSHHIGH_ID "crushhigh"
+#define CRUSHHIGH_NAME "CrushHigh"
 
-#define CLIP_ID "clip"
-#define CLIP_NAME "Clip"
+#define DOWNSAMPLELOW_ID "downsamplelow"
+#define DOWNSAMPLELOW_NAME "DownsampleLow"
+
+#define DOWNSAMPLEMID_ID "downsamplemid"
+#define DOWNSAMPLEMID_NAME "DownsampleMid"
+
+#define DOWNSAMPLEHIGH_ID "downsamplehigh"
+#define DOWNSAMPLEHIGH_NAME "DownsampleHigh"
+
+#define JITTERLOW_ID "jitterlow"
+#define JITTERLOW_NAME "JitterLow"
+
+#define JITTERMID_ID "jittermid"
+#define JITTERMID_NAME "JitterMid"
+
+#define JITTERHIGH_ID "jitterhigh"
+#define JITTERHIGH_NAME "JitterHigh"
+
+#define CLIPLOW_ID "cliplow"
+#define CLIPLOW_NAME "ClipLow"
+
+#define CLIPMID_ID "clipmid"
+#define CLIPMID_NAME "ClipMid"
+
+#define CLIPHIGH_ID "cliphigh"
+#define CLIPHIGH_NAME "ClipHigh"
 
 #define MIX_ID "mix"
 #define MIX_NAME "Mix"
@@ -82,9 +106,9 @@ public:
 
     enum
     {
-        fftOrder = 11,
+        fftOrder = 10,
         fftSize = 1 << fftOrder,
-        scopeSize = 512
+        scopeSize = 128
     };
 
     float fifoIn[fftSize];
@@ -109,13 +133,23 @@ private:
 
     Random random;
 
-    float crushRaw;
-    float downSampleRaw;
-    float jitterRaw;
-    float clipRaw;
+    float crushRawLow;
+    float downSampleRawLow;
+    float jitterRawLow;
+    float clipRawLow;
 
-    float mono_;
-    float mix_;
+    float crushRawMid;
+    float downSampleRawMid;
+    float jitterRawMid;
+    float clipRawMid;
+
+    float crushRawHigh;
+    float downSampleRawHigh;
+    float jitterRawHigh;
+    float clipRawHigh;
+
+    float monoRaw;
+    float mixRaw;
 
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SoundofmusicAudioProcessor)
