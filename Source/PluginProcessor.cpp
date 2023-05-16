@@ -126,7 +126,27 @@ void SoundofmusicAudioProcessor::changeProgramName (int index, const juce::Strin
 //==============================================================================
 void SoundofmusicAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
-    samplerate = sampleRate;
+    lowBandLowPassL1.setCoefficients(coefficients.makeLowPass(sampleRate, 200.0));
+    lowBandLowPassR1.setCoefficients(coefficients.makeLowPass(sampleRate, 200.0));
+    
+    midBandHighPassL1.setCoefficients(coefficients.makeLowPass(sampleRate, 200.0));
+    midBandHighPassR1.setCoefficients(coefficients.makeLowPass(sampleRate, 200.0));
+    midBandLowPassL1.setCoefficients(coefficients.makeLowPass(sampleRate, 2000.0));
+    midBandLowPassR1.setCoefficients(coefficients.makeLowPass(sampleRate, 2000.0));
+
+    highBandHighPassL1.setCoefficients(coefficients.makeLowPass(sampleRate, 2000.0));
+    highBandHighPassR1.setCoefficients(coefficients.makeLowPass(sampleRate, 2000.0));
+
+    lowBandLowPassL2.setCoefficients(coefficients.makeLowPass(sampleRate, 200.0));
+    lowBandLowPassR2.setCoefficients(coefficients.makeLowPass(sampleRate, 200.0));
+
+    midBandHighPassL2.setCoefficients(coefficients.makeLowPass(sampleRate, 200.0));
+    midBandHighPassR2.setCoefficients(coefficients.makeLowPass(sampleRate, 200.0));
+    midBandLowPassL2.setCoefficients(coefficients.makeLowPass(sampleRate, 2000.0));
+    midBandLowPassR2.setCoefficients(coefficients.makeLowPass(sampleRate, 2000.0));
+
+    highBandHighPassL2.setCoefficients(coefficients.makeLowPass(sampleRate, 2000.0));
+    highBandHighPassR2.setCoefficients(coefficients.makeLowPass(sampleRate, 2000.0));
 }
 
 void SoundofmusicAudioProcessor::releaseResources()
@@ -213,9 +233,65 @@ void SoundofmusicAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
 {
     const int totalNumInputChannels = getTotalNumInputChannels();
     const int totalNumOutputChannels = getTotalNumOutputChannels();
+    const int totalNumSamples = buffer.getNumSamples();
+    int sampleRate = getSampleRate();
 
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         buffer.clear(i, 0, buffer.getNumSamples());
+
+    AudioSampleBuffer dryBuffer;
+    AudioSampleBuffer lowBuffer;
+    AudioSampleBuffer midBuffer;
+    AudioSampleBuffer highBuffer;
+
+    dryBuffer.makeCopyOf(buffer);
+    lowBuffer.makeCopyOf(buffer);
+    midBuffer.makeCopyOf(buffer);
+    highBuffer.makeCopyOf(buffer);
+
+    lowBandLowPassL1.setCoefficients(coefficients.makeLowPass(sampleRate, 200.0));
+    lowBandLowPassR1.setCoefficients(coefficients.makeLowPass(sampleRate, 200.0));
+
+    midBandHighPassL1.setCoefficients(coefficients.makeHighPass(sampleRate, 200.0));
+    midBandHighPassR1.setCoefficients(coefficients.makeHighPass(sampleRate, 200.0));
+    midBandLowPassL1.setCoefficients(coefficients.makeLowPass(sampleRate, 2000.0));
+    midBandLowPassR1.setCoefficients(coefficients.makeLowPass(sampleRate, 2000.0));
+
+    highBandHighPassL1.setCoefficients(coefficients.makeHighPass(sampleRate, 2000.0));
+    highBandHighPassR1.setCoefficients(coefficients.makeHighPass(sampleRate, 2000.0));
+
+    lowBandLowPassL2.setCoefficients(coefficients.makeLowPass(sampleRate, 200.0));
+    lowBandLowPassR2.setCoefficients(coefficients.makeLowPass(sampleRate, 200.0));
+
+    midBandHighPassL2.setCoefficients(coefficients.makeHighPass(sampleRate, 200.0));
+    midBandHighPassR2.setCoefficients(coefficients.makeHighPass(sampleRate, 200.0));
+    midBandLowPassL2.setCoefficients(coefficients.makeLowPass(sampleRate, 2000.0));
+    midBandLowPassR2.setCoefficients(coefficients.makeLowPass(sampleRate, 2000.0));
+
+    highBandHighPassL2.setCoefficients(coefficients.makeHighPass(sampleRate, 2000.0));
+    highBandHighPassR2.setCoefficients(coefficients.makeHighPass(sampleRate, 2000.0));
+
+    lowBandLowPassL1.processSamples(lowBuffer.getWritePointer(0), totalNumSamples);
+    lowBandLowPassR1.processSamples(lowBuffer.getWritePointer(1), totalNumSamples);
+
+    midBandHighPassL1.processSamples(midBuffer.getWritePointer(0), totalNumSamples);
+    midBandHighPassR1.processSamples(midBuffer.getWritePointer(1), totalNumSamples);
+    midBandLowPassL1.processSamples(midBuffer.getWritePointer(0), totalNumSamples);
+    midBandLowPassR1.processSamples(midBuffer.getWritePointer(1), totalNumSamples);
+
+    highBandHighPassL1.processSamples(highBuffer.getWritePointer(0), totalNumSamples);
+    highBandHighPassR1.processSamples(highBuffer.getWritePointer(1), totalNumSamples);
+
+    lowBandLowPassL2.processSamples(lowBuffer.getWritePointer(0), totalNumSamples);
+    lowBandLowPassR2.processSamples(lowBuffer.getWritePointer(1), totalNumSamples);
+
+    midBandHighPassL2.processSamples(midBuffer.getWritePointer(0), totalNumSamples);
+    midBandHighPassR2.processSamples(midBuffer.getWritePointer(1), totalNumSamples);
+    midBandLowPassL2.processSamples(midBuffer.getWritePointer(0), totalNumSamples);
+    midBandLowPassR2.processSamples(midBuffer.getWritePointer(1), totalNumSamples);
+
+    highBandHighPassL2.processSamples(highBuffer.getWritePointer(0), totalNumSamples);
+    highBandHighPassR2.processSamples(highBuffer.getWritePointer(1), totalNumSamples);
 
     // getting parameters
     crushRawLow = *treeState.getRawParameterValue(CRUSHLOW_ID);
@@ -242,13 +318,13 @@ void SoundofmusicAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
     int crushMid = pow(2, crushMapMid);
     int crushMapHigh = mapToLog10((100.0 - crushRawHigh) / 100.0, 2.0, 32.0);
     int crushHigh = pow(2, crushMapHigh);
-    
+   
     int downSampleLow = mapToLog10((100.0 - downSampleRawLow) / 100.0, 441.0, 44101.0);
     int downSampleMid = mapToLog10((100.0 - downSampleRawMid) / 100.0, 441.0, 44101.0);
     int downSampleHigh = mapToLog10((100.0 - downSampleRawHigh) / 100.0, 441.0, 44101.0);
-    int stepLow = samplerate / downSampleLow;
-    int stepMid = samplerate / downSampleMid;
-    int stepHigh = samplerate / downSampleHigh;
+    int stepLow = sampleRate / downSampleLow;
+    int stepMid = sampleRate / downSampleMid;
+    int stepHigh = sampleRate / downSampleHigh;
 
     float noiseLow = jitterRawLow / 100.0;
     int crackleLow = jitterRawLow;
@@ -271,41 +347,117 @@ void SoundofmusicAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
         pushNextSampleIntoFifoIn((leftchannelData[sample] + rightchannelData[sample]) * 0.5);
     }
 
+    buffer.applyGain(1 - mix);
+    
     for (int channel = 0; channel < totalNumInputChannels; ++channel)
     {
-        float* channelData = buffer.getWritePointer(channel);
+        float* channelDataLow = lowBuffer.getWritePointer(channel);
+        float* channelDataMid = midBuffer.getWritePointer(channel);
+        float* channelDataHigh = highBuffer.getWritePointer(channel);
 
-        for (int sample = 0; sample < buffer.getNumSamples(); ) {
-            dry = channelData[sample];
+        for (int sample = 0; sample < totalNumSamples; ) {
+            dryLow = channelDataLow[sample];
 
             // bitcrushing happens here
-            wet = round((dry)*crushLow) / crushLow;
+            wetLow = round((dryLow)*crushLow) / crushLow;
 
             // jitter is added here
-            wet += (random.nextInt(3) - 1) * noiseLow * dry;
+            wetLow += (random.nextInt(3) - 1) * noiseLow * dryLow;
+
             if (crackleLow > 0) {
                 if (random.nextInt(100 - crackleLow + 2) == 0) {
                     if (random.nextInt(10) != 0) {
-                        wet = 0.0;
+                        wetLow = 0.0;
                     }
                 }
             }
 
             // clipping happens here
-            if (wet >= clipLow) {
-                wet = clipLow;
+            if (wetLow >= clipLow) {
+                wetLow = clipLow;
             }
-            else if (wet <= -clipLow) {
-                wet = -clipLow;
+            else if (wetLow <= -clipLow) {
+                wetLow = -clipLow;
             }
-            wet *= 1 / clipLow;
+            wetLow *= 1 / clipLow;
 
             // downsampling happens here
-            for (int i = 0; i < stepLow && sample < buffer.getNumSamples(); i++, sample++) {
+            for (int i = 0; i < stepLow && sample < totalNumSamples; i++, sample++) {
                 // mix is applied here
-                channelData[sample] = (1 - mix) * dry + mix * wet;
+                channelDataLow[sample] = wetLow;
             }
         }
+
+        for (int sample = 0; sample < totalNumSamples; ) {
+            dryMid = channelDataMid[sample];
+
+            // bitcrushing happens here
+            wetMid = round((dryMid)*crushMid) / crushMid;
+
+            // jitter is added here
+            wetMid += (random.nextInt(3) - 1) * noiseMid * dryMid;
+
+            if (crackleMid > 0) {
+                if (random.nextInt(100 - crackleMid + 2) == 0) {
+                    if (random.nextInt(10) != 0) {
+                        wetMid = 0.0;
+                    }
+                }
+            }
+
+            // clipping happens here
+            if (wetMid >= clipMid) {
+                wetMid = clipMid;
+            }
+            else if (wetMid <= -clipMid) {
+                wetMid = -clipMid;
+            }
+            wetMid *= 1 / clipMid;
+
+            // downsampling happens here
+            for (int i = 0; i < stepMid && sample < totalNumSamples; i++, sample++) {
+                // mix is applied here
+                channelDataMid[sample] = wetMid;
+            }
+        }
+
+        for (int sample = 0; sample < totalNumSamples; ) {
+            dryHigh = channelDataHigh[sample];
+
+            // bitcrushing happens here
+            wetHigh = round((dryHigh)*crushHigh) / crushHigh;
+
+            // jitter is added here
+            wetHigh += (random.nextInt(3) - 1) * noiseHigh * dryHigh;
+
+            if (crackleHigh > 0) {
+                if (random.nextInt(100 - crackleHigh + 2) == 0) {
+                    if (random.nextInt(10) != 0) {
+                        wetHigh = 0.0;
+                    }
+                }
+            }
+
+            // clipping happens here
+            if (wetHigh >= clipHigh) {
+                wetHigh = clipHigh;
+            }
+            else if (wetHigh <= -clipHigh) {
+                wetHigh = -clipHigh;
+            }
+            wetHigh *= 1 / clipHigh;
+
+            // downsampling happens here
+            for (int i = 0; i < stepHigh && sample < totalNumSamples; i++, sample++) {
+                // mix is applied here
+                channelDataHigh[sample] = wetHigh;
+            }
+        }
+        
+        //buffer.addFrom(channel, 0, dryBuffer, channel, 0, totalNumSamples, (double)(1 - mix));
+        buffer.addFrom(channel, 0, lowBuffer, channel, 0, totalNumSamples, (double)mix);
+        buffer.addFrom(channel, 0, midBuffer, channel, 0, totalNumSamples, (double)mix);
+        buffer.addFrom(channel, 0, highBuffer, channel, 0, totalNumSamples, (double)mix);
     }
 
     for (int sample = 0; sample < buffer.getNumSamples(); sample++) {

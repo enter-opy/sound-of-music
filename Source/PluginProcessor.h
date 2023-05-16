@@ -124,12 +124,15 @@ public:
     float scopeDataOut[scopeSize];
 
 private:
-    float dry;
-    float wet;
+    float dryLow;
+    float wetLow;
+    float dryMid;
+    float wetMid;
+    float dryHigh;
+    float wetHigh;
+
     float left;
     float right;
-
-    float samplerate;
 
     Random random;
 
@@ -150,6 +153,18 @@ private:
 
     float monoRaw;
     float mixRaw;
+
+    IIRFilter lowBandLowPassL1, lowBandLowPassR1;
+    IIRFilter midBandHighPassL1, midBandHighPassR1;
+    IIRFilter midBandLowPassL1, midBandLowPassR1;
+    IIRFilter highBandHighPassL1, highBandHighPassR1;
+
+    IIRFilter lowBandLowPassL2, lowBandLowPassR2;
+    IIRFilter midBandHighPassL2, midBandHighPassR2;
+    IIRFilter midBandLowPassL2, midBandLowPassR2;
+    IIRFilter highBandHighPassL2, highBandHighPassR2;
+
+    IIRCoefficients coefficients;
 
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SoundofmusicAudioProcessor)

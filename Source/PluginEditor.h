@@ -156,6 +156,8 @@ private:
     Rectangle<int> divider200Hz;
     Rectangle<int> divider2kHz;
 
+    Rectangle<int> bandSelectionArea;
+
 public:
     std::unique_ptr <AudioProcessorValueTreeState::SliderAttachment> crushValueLow;
     std::unique_ptr <AudioProcessorValueTreeState::SliderAttachment> downSampleValueLow;

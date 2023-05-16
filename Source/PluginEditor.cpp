@@ -305,6 +305,9 @@ void SoundofmusicAudioProcessorEditor::paint (juce::Graphics& g)
     g.fillRect(marker2kHz);
     g.fillRect(divider200Hz);
     g.fillRect(divider2kHz);
+
+    g.setColour(Colour::fromRGBA(0x37, 0x9B, 0xE3, 0x44));
+    g.fillRect(bandSelectionArea);
 }
 
 void SoundofmusicAudioProcessorEditor::resized()
@@ -345,22 +348,6 @@ void SoundofmusicAudioProcessorEditor::resized()
     clipSliderHigh.setBounds(430, 320, 80, 80);
     clipIndicatorHigh.setBounds(420, 430, 100, 20);
 
-    /*crushIndicatorLow.setVisible(false);
-    crushIndicatorMid.setVisible(false);
-    crushIndicatorHigh.setVisible(false);
-
-    downSampleIndicatorLow.setVisible(false);
-    downSampleIndicatorMid.setVisible(false);
-    downSampleIndicatorHigh.setVisible(false);
-
-    jitterIndicatorLow.setVisible(false);
-    jitterIndicatorMid.setVisible(false);
-    jitterIndicatorHigh.setVisible(false);
-
-    clipIndicatorLow.setVisible(false);
-    clipIndicatorMid.setVisible(false);
-    clipIndicatorHigh.setVisible(false);*/
-
     monoSlider.setBounds(610, 320, 80, 80);
     monoName.setBounds(600, 430, 100, 20);
     monoIndicator.setBounds(600, 430, 100, 20);
@@ -378,6 +365,8 @@ void SoundofmusicAudioProcessorEditor::resized()
     label200Hz.setBounds(277, 230, 60, 20);
     label2kHz.setBounds(543, 230, 60, 20);
     label20kHz.setBounds(785, 230, 60, 20);
+
+    bandSelectionArea.setBounds(40, 40, 268, 180);
 }
 
 void SoundofmusicAudioProcessorEditor::sliderValueChanged(Slider* slider) {
@@ -736,7 +725,13 @@ void SoundofmusicAudioProcessorEditor::mouseDown(const MouseEvent& event) {
 
 void SoundofmusicAudioProcessorEditor::bandSelected(int band)
 {
-
-    DBG(band);
-
+    if (band == 0) {
+        bandSelectionArea.setBounds(40, 40, 268, 180);
+    }
+    else if (band == 1) {
+        bandSelectionArea.setBounds(310, 40, 264, 180);
+    }
+    else if (band == 2) {
+        bandSelectionArea.setBounds(576, 40, 264, 180);
+    }
 }
