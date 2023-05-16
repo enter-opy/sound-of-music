@@ -108,7 +108,7 @@ public:
     {
         fftOrder = 10,
         fftSize = 1 << fftOrder,
-        scopeSize = 128
+        scopeSize = 512
     };
 
     float fifoIn[fftSize];

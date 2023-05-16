@@ -62,10 +62,10 @@ public:
     void drawNextFrameOfOutSpectrum();
     void drawFrame(juce::Graphics&);
 
-    void timerCallback() override;
+    void timerCallback(void) override;
 
     void mouseDown(const MouseEvent&) override;
-    void bandSelected(int band);
+    void bandSelected(void);
 
     juce::Rectangle<int> spectrumRect;
 
@@ -145,18 +145,29 @@ private:
     Rectangle<float> distortionArea;
     Rectangle<float> outputArea;
 
-    Rectangle<float> marker200Hz;
-    Rectangle<float> marker2kHz;
+    Rectangle<float> marker1;
+    Rectangle<float> marker2;
 
-    Label label20Hz;
-    Label label200Hz;
-    Label label2kHz;
-    Label label20kHz;
+    Label label0;
+    Label label1;
+    Label label2;
+    Label label3;
 
-    Rectangle<int> divider200Hz;
-    Rectangle<int> divider2kHz;
+    Rectangle<int> divider1;
+    Rectangle<int> divider2;
 
     Rectangle<int> bandSelectionArea;
+
+    Slider divider1Slider;
+    Slider divider2Slider;
+
+    int divider1pos{ 40 };
+    int divider2pos{ 840 };
+
+    int band{ 0 };
+
+    int frequency1{ 0 };
+    int frequency2{ 20000 };
 
 public:
     std::unique_ptr <AudioProcessorValueTreeState::SliderAttachment> crushValueLow;
