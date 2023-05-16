@@ -199,7 +199,7 @@ SoundofmusicAudioProcessorEditor::SoundofmusicAudioProcessorEditor (Soundofmusic
 
     monoSlider.setSliderStyle(Slider::RotaryVerticalDrag);
     monoSlider.setRange(0.0, 100.0, 1.0);
-    monoSlider.setValue(audioProcessor.getValue(5));
+    monoSlider.setValue(audioProcessor.getValue(12));
     monoSlider.setTextBoxStyle(Slider::NoTextBox, false, 0, 0);
     monoName.setText("STEREO/MONO", dontSendNotification);
     monoName.setJustificationType(Justification::centred);
@@ -214,7 +214,7 @@ SoundofmusicAudioProcessorEditor::SoundofmusicAudioProcessorEditor (Soundofmusic
 
     mixSlider.setSliderStyle(Slider::RotaryVerticalDrag);
     mixSlider.setRange(0.0, 100.0, 1.0);
-    mixSlider.setValue(audioProcessor.getValue(6));
+    mixSlider.setValue(audioProcessor.getValue(13));
     mixSlider.setTextBoxStyle(Slider::NoTextBox, false, 0, 0);
     mixName.setText("DRY/WET", dontSendNotification);
     mixName.setJustificationType(Justification::centred);
