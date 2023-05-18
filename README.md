@@ -1,29 +1,28 @@
 <h1>Sound of Music</h2>
 
-<h3>Sound of music is an audio effect plugin that adds digital artifacts to an audio signal</h3>
+<h3>Sound of music is an multi-band audio effect plugin that adds digital artifacts to an audio signal</h3>
+
+<img src="Screenshot.png" width="250">
 
 <br>
 
 <ul>
     <li>
-        <b>Bitdepth</b> - Number of bits per sample
+        <b>Crush</b> - Reduce the bitdepth
     </li>
     <li>
-        <b>Samplerate</b> - Number of samples per second
+        <b>Downsample</b> - Reduce the samplerate
     </li>
     <li>
-        <b>Jitter</b> - Amount of clocking distortion (Reference: <a href="https://headfonics.com/what-is-jitter-in-audio/">📖</a>)
+        <b>Jitter</b> - Add clocking distortion (Reference: <a href="https://headfonics.com/what-is-jitter-in-audio/">📖</a>)
     </li>
     <li>
-        <b>Clip</b> - Level at which the signal has to be clipped
-    </li>
-    <li>
-        <b>Crackle</b> - Chance of occurance of cracks and pops in the signal
+        <b>Clip</b> - Hard clipper
     </li>
     <li>
         <b>Stereo/Mono</b> - Stereo width of the signal
     </li>
     <li>
-        <b>Dry/Wet</b> - Ratio of dry signal to wet signal
+        <b>Dry/Wet</b> - Amount of dry/wet signal
     </li>
 </ul>
