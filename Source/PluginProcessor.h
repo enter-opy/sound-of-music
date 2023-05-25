@@ -52,6 +52,12 @@
 #define MONO_ID "mono"
 #define MONO_NAME "Mono"
 
+#define FREQ1_ID "frequency1"
+#define FREQ1_NAME "Frequency1"
+
+#define FREQ2_ID "frequency2"
+#define FREQ2_NAME "Frequency2"
+
 //==============================================================================
 /**
 */
@@ -165,6 +171,13 @@ private:
     IIRFilter highBandHighPassL2, highBandHighPassR2;
 
     IIRCoefficients coefficients;
+
+    float stepFactorLow;
+    float stepFactorMid;
+    float stepFactorHigh;
+
+    float frequency1;
+    float frequency2;
 
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SoundofmusicAudioProcessor)

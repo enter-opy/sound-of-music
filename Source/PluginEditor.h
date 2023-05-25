@@ -16,7 +16,7 @@
 /**
 */
 
-class SliderLookAndFeel : public LookAndFeel_V4 {
+class SliderLookAndFeelGradient : public LookAndFeel_V4 {
 public:
     float colourPosition;
 
@@ -91,20 +91,20 @@ private:
     Slider jitterSliderHigh;
     Slider clipSliderHigh;
 
-    SliderLookAndFeel crushLookAndFeelLow;
-    SliderLookAndFeel downSampleLookAndFeelLow;
-    SliderLookAndFeel jitterLookAndFeelLow;
-    SliderLookAndFeel clipLookAndFeelLow;
+    SliderLookAndFeelGradient crushLookAndFeelLow;
+    SliderLookAndFeelGradient downSampleLookAndFeelLow;
+    SliderLookAndFeelGradient jitterLookAndFeelLow;
+    SliderLookAndFeelGradient clipLookAndFeelLow;
 
-    SliderLookAndFeel crushLookAndFeelMid;
-    SliderLookAndFeel downSampleLookAndFeelMid;
-    SliderLookAndFeel jitterLookAndFeelMid;
-    SliderLookAndFeel clipLookAndFeelMid;
+    SliderLookAndFeelGradient crushLookAndFeelMid;
+    SliderLookAndFeelGradient downSampleLookAndFeelMid;
+    SliderLookAndFeelGradient jitterLookAndFeelMid;
+    SliderLookAndFeelGradient clipLookAndFeelMid;
 
-    SliderLookAndFeel crushLookAndFeelHigh;
-    SliderLookAndFeel downSampleLookAndFeelHigh;
-    SliderLookAndFeel jitterLookAndFeelHigh;
-    SliderLookAndFeel clipLookAndFeelHigh;
+    SliderLookAndFeelGradient crushLookAndFeelHigh;
+    SliderLookAndFeelGradient downSampleLookAndFeelHigh;
+    SliderLookAndFeelGradient jitterLookAndFeelHigh;
+    SliderLookAndFeelGradient clipLookAndFeelHigh;
 
     Label crushName;
     Label downSampleName;
@@ -129,8 +129,8 @@ private:
     Slider monoSlider;
     Slider mixSlider;
 
-    SliderLookAndFeel monoLookAndFeel;
-    SliderLookAndFeel mixLookAndFeel;
+    SliderLookAndFeelGradient monoLookAndFeel;
+    SliderLookAndFeelGradient mixLookAndFeel;
 
     Label monoName;
     Label mixName;
@@ -138,10 +138,14 @@ private:
     Label monoIndicator;
     Label mixIndicator;
 
+    Label freq1Name;
+    Label freq2Name;
+
     Spectrum spectrum;
 
     Rectangle<float> temp;
 
+    Rectangle<float> dividerArea;
     Rectangle<float> distortionArea;
     Rectangle<float> outputArea;
 
@@ -161,13 +165,18 @@ private:
     Slider divider1Slider;
     Slider divider2Slider;
 
-    int divider1pos{ 40 };
-    int divider2pos{ 840 };
+    SliderLookAndFeelGradient divider1LookAndFeel;
+    SliderLookAndFeelGradient divider2LookAndFeel;
+
+    int divider1Pos;
+    int divider2Pos;
 
     int band{ 0 };
 
-    int frequency1{ 0 };
-    int frequency2{ 20000 };
+    int frequency1{ 500 };
+    int frequency2{ 2000 };
+
+    float x;
 
 public:
     std::unique_ptr <AudioProcessorValueTreeState::SliderAttachment> crushValueLow;
@@ -187,6 +196,9 @@ public:
 
     std::unique_ptr <AudioProcessorValueTreeState::SliderAttachment> monoValue;
     std::unique_ptr <AudioProcessorValueTreeState::SliderAttachment> mixValue;
+
+    std::unique_ptr <AudioProcessorValueTreeState::SliderAttachment> divider1Value;
+    std::unique_ptr <AudioProcessorValueTreeState::SliderAttachment> divider2Value;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SoundofmusicAudioProcessorEditor)
 };

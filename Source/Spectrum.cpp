@@ -14,7 +14,7 @@
 //==============================================================================
 Spectrum::Spectrum()
 {
-    setSize(800, 180);
+    setSize(500, 180);
 }
 
 Spectrum::~Spectrum()
@@ -30,5 +30,5 @@ void Spectrum::paint (juce::Graphics& g)
 
 void Spectrum::resized()
 {
-    area.setBounds(0, 0, 800, 180);
+    area.setBounds(0, 0, 500, 180);
 }

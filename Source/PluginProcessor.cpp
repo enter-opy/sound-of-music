@@ -35,7 +35,9 @@ SoundofmusicAudioProcessor::SoundofmusicAudioProcessor()
             std::make_unique<AudioParameterFloat>(JITTERHIGH_ID, JITTERHIGH_NAME, 0.0, 100.0, 0.0),
             std::make_unique<AudioParameterFloat>(CLIPHIGH_ID, CLIPHIGH_NAME, -15.0, 0.0, 0.0),
             std::make_unique<AudioParameterFloat>(MONO_ID, MONO_NAME, 0.0, 100.0, 0.0),
-            std::make_unique<AudioParameterFloat>(MIX_ID, MIX_NAME, 0.0, 100.0, 100.0)
+            std::make_unique<AudioParameterFloat>(MIX_ID, MIX_NAME, 0.0, 100.0, 100.0),
+            std::make_unique<AudioParameterFloat>(FREQ1_ID, FREQ1_NAME, 20.0, 20000.0, 500.0),
+            std::make_unique<AudioParameterFloat>(FREQ2_ID, FREQ2_NAME, 20.0, 20000.0, 2000.0)
         }
     ),
     crushRawLow(0.0),
@@ -51,7 +53,9 @@ SoundofmusicAudioProcessor::SoundofmusicAudioProcessor()
     jitterRawHigh(0.0),
     clipRawHigh(0.0),
     monoRaw(0.0),
-    mixRaw(100.0)
+    mixRaw(100.0),
+    frequency1(500.0),
+    frequency2(2000.0)
 #endif
 {
     treeState.state = ValueTree("savedParams");
@@ -126,27 +130,27 @@ void SoundofmusicAudioProcessor::changeProgramName (int index, const juce::Strin
 //==============================================================================
 void SoundofmusicAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
-    lowBandLowPassL1.setCoefficients(coefficients.makeLowPass(sampleRate, 200.0));
-    lowBandLowPassR1.setCoefficients(coefficients.makeLowPass(sampleRate, 200.0));
+    lowBandLowPassL1.setCoefficients(coefficients.makeLowPass(sampleRate, frequency1));
+    lowBandLowPassR1.setCoefficients(coefficients.makeLowPass(sampleRate, frequency1));
     
-    midBandHighPassL1.setCoefficients(coefficients.makeLowPass(sampleRate, 200.0));
-    midBandHighPassR1.setCoefficients(coefficients.makeLowPass(sampleRate, 200.0));
-    midBandLowPassL1.setCoefficients(coefficients.makeLowPass(sampleRate, 2000.0));
-    midBandLowPassR1.setCoefficients(coefficients.makeLowPass(sampleRate, 2000.0));
+    midBandHighPassL1.setCoefficients(coefficients.makeLowPass(sampleRate, frequency1));
+    midBandHighPassR1.setCoefficients(coefficients.makeLowPass(sampleRate, frequency1));
+    midBandLowPassL1.setCoefficients(coefficients.makeLowPass(sampleRate, frequency2));
+    midBandLowPassR1.setCoefficients(coefficients.makeLowPass(sampleRate, frequency2));
 
-    highBandHighPassL1.setCoefficients(coefficients.makeLowPass(sampleRate, 2000.0));
-    highBandHighPassR1.setCoefficients(coefficients.makeLowPass(sampleRate, 2000.0));
+    highBandHighPassL1.setCoefficients(coefficients.makeLowPass(sampleRate, frequency2));
+    highBandHighPassR1.setCoefficients(coefficients.makeLowPass(sampleRate, frequency2));
 
-    lowBandLowPassL2.setCoefficients(coefficients.makeLowPass(sampleRate, 200.0));
-    lowBandLowPassR2.setCoefficients(coefficients.makeLowPass(sampleRate, 200.0));
+    lowBandLowPassL2.setCoefficients(coefficients.makeLowPass(sampleRate, frequency1));
+    lowBandLowPassR2.setCoefficients(coefficients.makeLowPass(sampleRate, frequency1));
 
-    midBandHighPassL2.setCoefficients(coefficients.makeLowPass(sampleRate, 200.0));
-    midBandHighPassR2.setCoefficients(coefficients.makeLowPass(sampleRate, 200.0));
-    midBandLowPassL2.setCoefficients(coefficients.makeLowPass(sampleRate, 2000.0));
-    midBandLowPassR2.setCoefficients(coefficients.makeLowPass(sampleRate, 2000.0));
+    midBandHighPassL2.setCoefficients(coefficients.makeLowPass(sampleRate, frequency1));
+    midBandHighPassR2.setCoefficients(coefficients.makeLowPass(sampleRate, frequency1));
+    midBandLowPassL2.setCoefficients(coefficients.makeLowPass(sampleRate, frequency2));
+    midBandLowPassR2.setCoefficients(coefficients.makeLowPass(sampleRate, frequency2));
 
-    highBandHighPassL2.setCoefficients(coefficients.makeLowPass(sampleRate, 2000.0));
-    highBandHighPassR2.setCoefficients(coefficients.makeLowPass(sampleRate, 2000.0));
+    highBandHighPassL2.setCoefficients(coefficients.makeLowPass(sampleRate, frequency2));
+    highBandHighPassR2.setCoefficients(coefficients.makeLowPass(sampleRate, frequency2));
 }
 
 void SoundofmusicAudioProcessor::releaseResources()
@@ -227,6 +231,12 @@ double SoundofmusicAudioProcessor::getValue(int slider) {
     else if (slider == 13) {
         return mixRaw;
     }
+    else if (slider == 14) {
+        return frequency1;
+    }
+    else if (slider == 15) {
+        return frequency2;
+    }
 }
 
 void SoundofmusicAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
@@ -249,27 +259,30 @@ void SoundofmusicAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
     midBuffer.makeCopyOf(buffer);
     highBuffer.makeCopyOf(buffer);
 
-    lowBandLowPassL1.setCoefficients(coefficients.makeLowPass(sampleRate, 200.0));
-    lowBandLowPassR1.setCoefficients(coefficients.makeLowPass(sampleRate, 200.0));
+    frequency1 = *treeState.getRawParameterValue(FREQ1_ID);
+    frequency2 = *treeState.getRawParameterValue(FREQ2_ID);
 
-    midBandHighPassL1.setCoefficients(coefficients.makeHighPass(sampleRate, 200.0));
-    midBandHighPassR1.setCoefficients(coefficients.makeHighPass(sampleRate, 200.0));
-    midBandLowPassL1.setCoefficients(coefficients.makeLowPass(sampleRate, 2000.0));
-    midBandLowPassR1.setCoefficients(coefficients.makeLowPass(sampleRate, 2000.0));
+    lowBandLowPassL1.setCoefficients(coefficients.makeLowPass(sampleRate, frequency1));
+    lowBandLowPassR1.setCoefficients(coefficients.makeLowPass(sampleRate, frequency1));
 
-    highBandHighPassL1.setCoefficients(coefficients.makeHighPass(sampleRate, 2000.0));
-    highBandHighPassR1.setCoefficients(coefficients.makeHighPass(sampleRate, 2000.0));
+    midBandHighPassL1.setCoefficients(coefficients.makeHighPass(sampleRate, frequency1));
+    midBandHighPassR1.setCoefficients(coefficients.makeHighPass(sampleRate, frequency1));
+    midBandLowPassL1.setCoefficients(coefficients.makeLowPass(sampleRate, frequency2));
+    midBandLowPassR1.setCoefficients(coefficients.makeLowPass(sampleRate, frequency2));
 
-    lowBandLowPassL2.setCoefficients(coefficients.makeLowPass(sampleRate, 200.0));
-    lowBandLowPassR2.setCoefficients(coefficients.makeLowPass(sampleRate, 200.0));
+    highBandHighPassL1.setCoefficients(coefficients.makeHighPass(sampleRate, frequency2));
+    highBandHighPassR1.setCoefficients(coefficients.makeHighPass(sampleRate, frequency2));
 
-    midBandHighPassL2.setCoefficients(coefficients.makeHighPass(sampleRate, 200.0));
-    midBandHighPassR2.setCoefficients(coefficients.makeHighPass(sampleRate, 200.0));
-    midBandLowPassL2.setCoefficients(coefficients.makeLowPass(sampleRate, 2000.0));
-    midBandLowPassR2.setCoefficients(coefficients.makeLowPass(sampleRate, 2000.0));
+    lowBandLowPassL2.setCoefficients(coefficients.makeLowPass(sampleRate, frequency1));
+    lowBandLowPassR2.setCoefficients(coefficients.makeLowPass(sampleRate, frequency1));
 
-    highBandHighPassL2.setCoefficients(coefficients.makeHighPass(sampleRate, 2000.0));
-    highBandHighPassR2.setCoefficients(coefficients.makeHighPass(sampleRate, 2000.0));
+    midBandHighPassL2.setCoefficients(coefficients.makeHighPass(sampleRate, frequency1));
+    midBandHighPassR2.setCoefficients(coefficients.makeHighPass(sampleRate, frequency1));
+    midBandLowPassL2.setCoefficients(coefficients.makeLowPass(sampleRate, frequency2));
+    midBandLowPassR2.setCoefficients(coefficients.makeLowPass(sampleRate, frequency2));
+
+    highBandHighPassL2.setCoefficients(coefficients.makeHighPass(sampleRate, frequency2));
+    highBandHighPassR2.setCoefficients(coefficients.makeHighPass(sampleRate, frequency2));
 
     lowBandLowPassL1.processSamples(lowBuffer.getWritePointer(0), totalNumSamples);
     lowBandLowPassR1.processSamples(lowBuffer.getWritePointer(1), totalNumSamples);
@@ -381,11 +394,22 @@ void SoundofmusicAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
             }
             wetLow *= 1 / clipLow;
 
+            if (sample > stepLow) {
+                stepFactorLow = (wetLow - channelDataLow[sample - stepLow]) / (float)stepLow;
+
+                for (int i = 0; i < stepLow; i++) {
+                    // mix is applied here
+                    channelDataLow[sample - i] = channelDataLow[sample - i] + i * stepFactorLow;
+                }
+            }
+            
             // downsampling happens here
             for (int i = 0; i < stepLow && sample < totalNumSamples; i++, sample++) {
                 // mix is applied here
                 channelDataLow[sample] = wetLow;
             }
+
+            
         }
 
         for (int sample = 0; sample < totalNumSamples; ) {
@@ -413,6 +437,15 @@ void SoundofmusicAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
                 wetMid = -clipMid;
             }
             wetMid *= 1 / clipMid;
+
+            if (sample > stepMid) {
+                stepFactorMid = (wetMid - channelDataMid[sample - stepMid]) / (float)stepMid;
+
+                for (int i = 0; i < stepMid; i++) {
+                    // mix is applied here
+                    channelDataMid[sample - i] = channelDataMid[sample - i] + i * stepFactorMid;
+                }
+            }
 
             // downsampling happens here
             for (int i = 0; i < stepMid && sample < totalNumSamples; i++, sample++) {
@@ -446,6 +479,15 @@ void SoundofmusicAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
                 wetHigh = -clipHigh;
             }
             wetHigh *= 1 / clipHigh;
+
+            if (sample > stepHigh) {
+                stepFactorHigh = (wetHigh - channelDataHigh[sample - stepHigh]) / (float)stepHigh;
+
+                for (int i = 0; i < stepHigh; i++) {
+                    // mix is applied here
+                    channelDataHigh[sample - i] = channelDataHigh[sample - i] + i * stepFactorHigh;
+                }
+            }
 
             // downsampling happens here
             for (int i = 0; i < stepHigh && sample < totalNumSamples; i++, sample++) {

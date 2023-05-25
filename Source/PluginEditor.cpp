@@ -35,6 +35,9 @@ SoundofmusicAudioProcessorEditor::SoundofmusicAudioProcessorEditor (Soundofmusic
     monoValue = std::make_unique<AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.treeState, MONO_ID, monoSlider);
     mixValue = std::make_unique<AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.treeState, MIX_ID, mixSlider);
 
+    divider1Value = std::make_unique<AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.treeState, FREQ1_ID, divider1Slider);
+    divider2Value = std::make_unique<AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.treeState, FREQ2_ID, divider2Slider);
+
     spectrum.addMouseListener(this, false);
     addAndMakeVisible(spectrum);
 
@@ -266,7 +269,7 @@ SoundofmusicAudioProcessorEditor::SoundofmusicAudioProcessorEditor (Soundofmusic
     label0.setColour(Label::textColourId, Colour::fromRGB(0xB1, 0x2E, 0x82));
     addAndMakeVisible(&label0);
 
-    label1.setText("200 Hz", dontSendNotification);
+    label1.setText("500 Hz", dontSendNotification);
     label1.setJustificationType(Justification::centred);
     label1.setColour(Label::textColourId, Colour::fromRGB(0xB1, 0x2E, 0x82));
     addAndMakeVisible(&label1);
@@ -283,21 +286,31 @@ SoundofmusicAudioProcessorEditor::SoundofmusicAudioProcessorEditor (Soundofmusic
 
     divider1Slider.setSliderStyle(Slider::RotaryHorizontalVerticalDrag);
     divider1Slider.setRange(20.0, 20000.0, 1.0);
-    divider1Slider.setValue(audioProcessor.getValue(14));
+    divider1Slider.setValue((int)audioProcessor.getValue(14));
     divider1Slider.setTextBoxStyle(Slider::NoTextBox, false, 0, 0);
     divider1Slider.setSkewFactorFromMidPoint(1000.0);
+    divider1Slider.setLookAndFeel(&divider1LookAndFeel);
     divider1Slider.addListener(this);
     addAndMakeVisible(&divider1Slider);
-    divider1Slider.setValue(0.0);
 
     divider2Slider.setSliderStyle(Slider::RotaryHorizontalVerticalDrag);
     divider2Slider.setRange(20.0, 20000.0, 1.0);
-    divider2Slider.setValue(audioProcessor.getValue(14));
+    divider2Slider.setValue((int)audioProcessor.getValue(15));
     divider2Slider.setTextBoxStyle(Slider::NoTextBox, false, 0, 0);
     divider2Slider.setSkewFactorFromMidPoint(1000.0);
+    divider2Slider.setLookAndFeel(&divider2LookAndFeel);
     divider2Slider.addListener(this);
     addAndMakeVisible(&divider2Slider);
-    divider2Slider.setValue(20000.0);
+
+    freq1Name.setText("FREQ 1", dontSendNotification);
+    freq1Name.setJustificationType(Justification::centred);
+    freq1Name.setColour(Label::textColourId, Colour::fromRGB(0xB1, 0x2E, 0x82));
+    addAndMakeVisible(&freq1Name);
+
+    freq2Name.setText("FREQ 2", dontSendNotification);
+    freq2Name.setJustificationType(Justification::centred);
+    freq2Name.setColour(Label::textColourId, Colour::fromRGB(0xB1, 0x2E, 0x82));
+    addAndMakeVisible(&freq2Name);
 }
 
 SoundofmusicAudioProcessorEditor::~SoundofmusicAudioProcessorEditor()
@@ -310,11 +323,16 @@ void SoundofmusicAudioProcessorEditor::paint (juce::Graphics& g)
     g.setColour(Colour::fromRGB(0x0D, 0x10, 0x15));
     g.fillAll();
 
-    ColourGradient gradient(Colour::fromRGB(0x37, 0x9B, 0xE3), 40, 290, Colour::fromRGB(0xCB, 0x16, 0x6D), 40, 460, false);
+    ColourGradient gradient1(Colour::fromRGB(0x37, 0x9B, 0xE3), 40, 290, Colour::fromRGB(0xCB, 0x16, 0x6D), 40, 460, false);
+    g.setGradientFill(gradient1);
 
-    g.setGradientFill(gradient);
     g.drawRoundedRectangle(distortionArea, 10, 2);
     g.drawRoundedRectangle(outputArea, 10, 2);
+
+    ColourGradient gradient2(Colour::fromRGB(0x37, 0x9B, 0xE3), 40, 40, Colour::fromRGB(0xCB, 0x16, 0x6D), 40, 180, false);
+    g.setGradientFill(gradient2);
+
+    g.drawRoundedRectangle(dividerArea, 10, 2);
 
     drawFrame(g);
 
@@ -330,8 +348,9 @@ void SoundofmusicAudioProcessorEditor::paint (juce::Graphics& g)
 
 void SoundofmusicAudioProcessorEditor::resized()
 {
-    spectrum.setBounds(40, 40, 800, 180);
+    spectrum.setBounds(40, 40, 500, 180);
 
+    dividerArea.setBounds(580, 40, 260, 180);
     distortionArea.setBounds(40, 290, 500, 190);
     outputArea.setBounds(580, 290, 260, 190);
 
@@ -373,21 +392,35 @@ void SoundofmusicAudioProcessorEditor::resized()
     mixName.setBounds(720, 430, 100, 20);
     mixIndicator.setBounds(720, 430, 100, 20);
 
-    marker1.setBounds(divider1pos - 1, 215, 4, 10);
-    marker2.setBounds(divider2pos - 1, 215, 4, 10);
+    x = mapToLog10((19980 - (frequency1 - 20.0)) / 19980.0, 40.0, 540.0);
+    x = mapToLog10((x - 40) / 500.0, 40.0, 540.0);
+    divider1Pos = 580 - x;
 
-    divider1.setBounds(divider1pos, 40, 2, 180);
-    divider2.setBounds(divider2pos, 40, 2, 180);
+    x = mapToLog10((19980 - (frequency2 - 20.0)) / 19980.0, 40.0, 540.0);
+    x = mapToLog10((x - 40) / 500.0, 40.0, 540.0);
+    divider2Pos = 580 - x;
+
+    divider1LookAndFeel.colourPosition = 90.0 / 500 * (divider1Pos - 40);
+    divider2LookAndFeel.colourPosition = 90.0 / 500 * (divider2Pos - 40);
+
+    marker1.setBounds(divider1Pos - 1, 215, 4, 10);
+    marker2.setBounds(divider2Pos - 1, 215, 4, 10);
+
+    divider1.setBounds(divider1Pos, 40, 2, 180);
+    divider2.setBounds(divider2Pos, 40, 2, 180);
 
     label0.setBounds(35, 230, 60, 20);
-    label1.setBounds(divider1pos - 41, 230, 60, 20);
-    label2.setBounds(divider2pos - 41, 230, 60, 20);
-    label3.setBounds(785, 230, 60, 20);
+    label1.setBounds(divider1Pos - 31, 230, 60, 20);
+    label2.setBounds(divider2Pos - 31, 230, 60, 20);
+    label3.setBounds(485, 230, 60, 20);
 
-    bandSelectionArea.setBounds(40, 40, divider1pos - 40, 180);
+    divider1Slider.setBounds(610, 70, 80, 80);
+    divider2Slider.setBounds(730, 70, 80, 80);
 
-    divider1Slider.setBounds(0, 0, 100, 100);
-    divider2Slider.setBounds(200, 0, 100, 100);
+    bandSelectionArea.setBounds(40, 40, divider1Pos - 40, 180);
+
+    freq1Name.setBounds(600, 180, 100, 20);
+    freq2Name.setBounds(720, 180, 100, 20);
 }
 
 void SoundofmusicAudioProcessorEditor::sliderValueChanged(Slider* slider) {
@@ -469,29 +502,57 @@ void SoundofmusicAudioProcessorEditor::sliderValueChanged(Slider* slider) {
     }
 
     else if (slider == &divider1Slider) {
+        
+
         if (divider1Slider.getValue() > frequency2 - 100) {
             divider1Slider.setValue(frequency2 - 100);
             divider1Slider.setEnabled(false);
         }
 
+        if (divider1Slider.getValue() <= 200.0) {
+            label0.setVisible(false);
+        }
+        else {
+            label0.setVisible(true);
+        }
+
         frequency1 = divider1Slider.getValue();
-        float x = mapToLog10((19980 - (frequency1 - 20.0)) / 19980.0, 40.0, 840.0);
-        x = mapToLog10((x - 40) / 800.0, 40.0, 840.0);
-        divider1pos = 880 - x;
-        temp = String((int)divider1Slider.getValue()) + " Hz";
-        label1.setText(temp, dontSendNotification);
-        marker1.setBounds(divider1pos - 1, 215, 4, 10);
-        divider1.setBounds(divider1pos, 40, 2, 180);
-        label1.setBounds(divider1pos - 41, 230, 60, 20);
+        x = mapToLog10((19980 - (frequency1 - 20.0)) / 19980.0, 40.0, 540.0);
+        x = mapToLog10((x - 40) / 500.0, 40.0, 540.0);
+        divider1Pos = 580 - x;
+
+        divider1LookAndFeel.colourPosition = 90.0 / 500 * (divider1Pos - 40);
+
+        if (divider1Pos >= divider2Pos - 50) {
+            label1.setVisible(true);
+            label2.setVisible(false);
+        }
+        else {
+            label1.setVisible(true);
+            label2.setVisible(true);
+        }
+
+        if (divider1Slider.getValue() >= 1000.0) {
+            temp = String((float)divider1Slider.getValue() / 1000.0) + " kHz";
+            label1.setText(temp, dontSendNotification);
+        }
+        else {
+            temp = String((int)divider1Slider.getValue()) + " Hz";
+            label1.setText(temp, dontSendNotification);
+        }
+
+        marker1.setBounds(divider1Pos - 1, 215, 4, 10);
+        divider1.setBounds(divider1Pos, 40, 2, 180);
+        label1.setBounds(divider1Pos - 41, 230, 60, 20);
 
         if (band == 0) {
-            bandSelectionArea.setBounds(40, 40, divider1pos - 40, 180);
+            bandSelectionArea.setBounds(40, 40, divider1Pos - 40, 180);
         }
         else if (band == 1) {
-            bandSelectionArea.setBounds(divider1pos, 40, divider2pos - divider1pos, 180);
+            bandSelectionArea.setBounds(divider1Pos, 40, divider2Pos - divider1Pos, 180);
         }
         else if (band == 2) {
-            bandSelectionArea.setBounds(divider2pos, 40, 840 - divider2pos, 180);
+            bandSelectionArea.setBounds(divider2Pos, 40, 840 - divider2Pos, 180);
         }
     }
     else if (slider == &divider2Slider) {
@@ -500,24 +561,50 @@ void SoundofmusicAudioProcessorEditor::sliderValueChanged(Slider* slider) {
             divider2Slider.setEnabled(false);
         }
 
+        if (divider2Slider.getValue() >= 8000.0) {
+            label3.setVisible(false);
+        }
+        else {
+            label3.setVisible(true);
+        }
+
         frequency2 = divider2Slider.getValue();
-        float x = mapToLog10((19980 - (frequency2 - 20.0)) / 19980.0, 40.0, 840.0);
-        x = mapToLog10((x - 40) / 800.0, 40.0, 840.0);
-        divider2pos = 880 - x;
-        temp = String((int)divider2Slider.getValue()) + " Hz";
-        label2.setText(temp, dontSendNotification);
-        marker2.setBounds(divider2pos - 1, 215, 4, 10);
-        divider2.setBounds(divider2pos, 40, 2, 180);
-        label2.setBounds(divider2pos - 41, 230, 60, 20);
+        x = mapToLog10((19980 - (frequency2 - 20.0)) / 19980.0, 40.0, 540.0);
+        x = mapToLog10((x - 40) / 500.0, 40.0, 540.0);
+        divider2Pos = 580 - x;
+
+        divider2LookAndFeel.colourPosition = 90.0 / 500 * (divider2Pos - 40);
+
+        if (divider2Pos <= divider1Pos + 50) {
+            label1.setVisible(false);
+            label2.setVisible(true);
+        }
+        else {
+            label1.setVisible(true);
+            label2.setVisible(true);
+        }
+        
+        if (divider2Slider.getValue() >= 1000.0) {
+            temp = String((float)divider2Slider.getValue() / 1000.0) + " kHz";
+            label2.setText(temp, dontSendNotification);
+        }
+        else {
+            temp = String((int)divider2Slider.getValue()) + " Hz";
+            label2.setText(temp, dontSendNotification);
+        }
+
+        marker2.setBounds(divider2Pos - 1, 215, 4, 10);
+        divider2.setBounds(divider2Pos, 40, 2, 180);
+        label2.setBounds(divider2Pos - 41, 230, 60, 20);
 
         if (band == 0) {
-            bandSelectionArea.setBounds(40, 40, divider1pos - 40, 180);
+            bandSelectionArea.setBounds(40, 40, divider1Pos - 40, 180);
         }
         else if (band == 1) {
-            bandSelectionArea.setBounds(divider1pos, 40, divider2pos - divider1pos, 180);
+            bandSelectionArea.setBounds(divider1Pos, 40, divider2Pos - divider1Pos, 180);
         }
         else if (band == 2) {
-            bandSelectionArea.setBounds(divider2pos, 40, 840 - divider2pos, 180);
+            bandSelectionArea.setBounds(divider2Pos, 40, 840 - divider2Pos, 180);
         }
     }
 }
@@ -714,31 +801,22 @@ void SoundofmusicAudioProcessorEditor::drawFrame(juce::Graphics& g)
     ColourGradient gradientOutSpectrum(Colour::fromRGB(0x17, 0x7B, 0xC3), 40, 40, Colour::fromRGB(0xAB, 0x06, 0x4D), 40, 220, false);
     ColourGradient gradientInSpectrum(Colour::fromRGB(0x37, 0x9B, 0xE3), 40, 40, Colour::fromRGB(0xCB, 0x16, 0x6D), 40, 220, false);
 
-    for (int i = 5; i < audioProcessor.scopeSize - 5; ++i)
-    {
-        audioProcessor.scopeDataIn[i] = audioProcessor.scopeDataIn[i - 4] + audioProcessor.scopeDataIn[i - 3] + audioProcessor.scopeDataIn[i - 2] + audioProcessor.scopeDataIn[i - 1] + audioProcessor.scopeDataIn[i] + audioProcessor.scopeDataIn[i + 1] + audioProcessor.scopeDataIn[i + 2] + audioProcessor.scopeDataIn[i + 3] + audioProcessor.scopeDataIn[i + 4];
-        audioProcessor.scopeDataIn[i] /= 9.0;
-
-        audioProcessor.scopeDataOut[i] = audioProcessor.scopeDataOut[i - 4] + audioProcessor.scopeDataOut[i - 3] + audioProcessor.scopeDataOut[i - 2] + audioProcessor.scopeDataOut[i - 1] + audioProcessor.scopeDataOut[i] + audioProcessor.scopeDataOut[i + 1] + audioProcessor.scopeDataOut[i + 2] + audioProcessor.scopeDataOut[i + 3] + audioProcessor.scopeDataOut[i + 4];
-        audioProcessor.scopeDataOut[i] /= 9.0;
-    }
-
     for (int i = 1; i < audioProcessor.scopeSize; ++i)
     {
         
         g.setGradientFill(gradientOutSpectrum);
 
-        g.drawLine({ (float)juce::jmap(i - 1, 0, audioProcessor.scopeSize - 1, 40, 840),
+        g.drawLine({ (float)juce::jmap(i - 1, 0, audioProcessor.scopeSize - 1, 40, 540),
                               220.0,
-                      (float)juce::jmap(i,     0, audioProcessor.scopeSize - 1, 40, 840),
+                      (float)juce::jmap(i,     0, audioProcessor.scopeSize - 1, 40, 540),
                               juce::jmap(audioProcessor.scopeDataOut[i],     0.0f, 1.0f, 220.0f, 40.0f) });
 
         
         g.setGradientFill(gradientInSpectrum);
 
-        g.drawLine({ (float)juce::jmap(i - 1, 0, audioProcessor.scopeSize - 1, 40, 840),
+        g.drawLine({ (float)juce::jmap(i - 1, 0, audioProcessor.scopeSize - 1, 40, 540),
                               220.0,
-                      (float)juce::jmap(i,     0, audioProcessor.scopeSize - 1, 40, 840),
+                      (float)juce::jmap(i,     0, audioProcessor.scopeSize - 1, 40, 540),
                               juce::jmap(audioProcessor.scopeDataIn[i],     0.0f, 1.0f, 220.0f, 40.0f) });
     }
 }
@@ -748,7 +826,7 @@ void SoundofmusicAudioProcessorEditor::mouseDown(const MouseEvent& event) {
         return;
     }
     
-    if (event.getMouseDownX() > 40 && event.getMouseDownX() <= divider1pos - 40) {
+    if (event.getMouseDownX() > 0 && event.getMouseDownX() <= divider1Pos - 40) {
         band = 0;
         bandSelected();
         crushSliderLow.setVisible(true);
@@ -767,7 +845,7 @@ void SoundofmusicAudioProcessorEditor::mouseDown(const MouseEvent& event) {
         clipSliderMid.setVisible(false);
         clipSliderHigh.setVisible(false);
     }
-    else if (event.getMouseDownX() > divider1pos - 40 && event.getMouseDownX() <= divider2pos - 40) {
+    else if (event.getMouseDownX() > divider1Pos - 40 && event.getMouseDownX() <= divider2Pos - 40) {
         band = 1;
         bandSelected();
         crushSliderLow.setVisible(false);
@@ -786,7 +864,7 @@ void SoundofmusicAudioProcessorEditor::mouseDown(const MouseEvent& event) {
         clipSliderMid.setVisible(true);
         clipSliderHigh.setVisible(false);
     }
-    else if (event.getMouseDownX() > divider2pos - 40 && event.getMouseDownX() <= 900) {
+    else if (event.getMouseDownX() > divider2Pos - 40 && event.getMouseDownX() <= 600) {
         band = 2;
         bandSelected();
         crushSliderLow.setVisible(false);
@@ -810,12 +888,12 @@ void SoundofmusicAudioProcessorEditor::mouseDown(const MouseEvent& event) {
 void SoundofmusicAudioProcessorEditor::bandSelected()
 {
     if (band == 0) {
-        bandSelectionArea.setBounds(40, 40, divider1pos - 40, 180);
+        bandSelectionArea.setBounds(40, 40, divider1Pos - 40, 180);
     }
     else if (band == 1) {
-        bandSelectionArea.setBounds(divider1pos, 40, divider2pos - divider1pos, 180);
+        bandSelectionArea.setBounds(divider1Pos, 40, divider2Pos - divider1Pos, 180);
     }
     else if (band == 2) {
-        bandSelectionArea.setBounds(divider2pos, 40, 840 - divider2pos, 180);
+        bandSelectionArea.setBounds(divider2Pos, 40, 540 - divider2Pos, 180);
     }
 }
