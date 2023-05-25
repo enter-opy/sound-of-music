@@ -604,7 +604,7 @@ void SoundofmusicAudioProcessorEditor::sliderValueChanged(Slider* slider) {
             bandSelectionArea.setBounds(divider1Pos, 40, divider2Pos - divider1Pos, 180);
         }
         else if (band == 2) {
-            bandSelectionArea.setBounds(divider2Pos, 40, 840 - divider2Pos, 180);
+            bandSelectionArea.setBounds(divider2Pos, 40, 540 - divider2Pos, 180);
         }
     }
 }
