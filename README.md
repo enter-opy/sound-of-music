@@ -1,6 +1,6 @@
 <h1>Sound of Music</h2>
 
-<h3>Sound of music is an multi-band audio effect plugin that adds digital artifacts to an audio signal</h3>
+<h3>Sound of music is a multi-band audio effect plugin that adds digital artifacts to an audio signal</h3>
 
 <img src="Screenshot.png" width="800">
 
@@ -8,18 +8,19 @@
 
 <p>
 <b>
-    Sound of music allows multiband bitcrushing and clipping. It features 3 bands.
-    The spectrum allows you to visualize the audio and select the bands. Move Freq 1 and Freq 2 sliders to adjust the width of the bands.
-    Click the respective region on the spectrum to select a band. Crush, Downsample, Jitter, Clip are band specific sliders. Stereo/Mono and Dry/Wet works globally
+    Sound of music is a multiband bit crusher with 3 bands. The spectrum analyzer allows you to
+    visualize the audio and control the band parameters. Move Freq 1 and Freq 2 sliders to adjust bandwidths. There
+    are 3 instances of crush, downsample, jitter and clip each for the 3 bands. Select bands on the spectrum
+    analyzer to switch between each of them. Stereo/Mono and Dry/Wet work globally.
 </b>
 </p>
 <br>
 <ul>
     <li>
-        <b>Freq 1</b> - low-pass cutoff frequency for band 1 and high pass cutoff frequency for band 2
+        <b>Freq 1</b> - low-pass cutoff frequency for band 1 and high-pass cutoff frequency for band 2
     </li>
     <li>
-        <b>Freq 2</b> - low-pass cutoff frequency for band 2 and high pass cutoff frequency for band 3
+        <b>Freq 2</b> - low-pass cutoff frequency for band 2 and high-pass cutoff frequency for band 3
     </li>
 </ul>
 <br>
@@ -28,7 +29,7 @@
         <b>Crush</b> - Reduce the resolution (Reference: <a href="https://en.wikipedia.org/wiki/Bitcrusher">📖</a>)
     </li>
     <li>
-        <b>Downsample</b> - Reduce the samplerate (Reference: <a href="https://en.wikipedia.org/wiki/Bitcrusher">📖</a>)
+        <b>Downsample</b> - Reduce the sample rate (Reference: <a href="https://en.wikipedia.org/wiki/Bitcrusher">📖</a>)
     </li>
     <li>
         <b>Jitter</b> - Add clocking distortion (Reference: <a href="https://headfonics.com/what-is-jitter-in-audio/">📖</a>)
