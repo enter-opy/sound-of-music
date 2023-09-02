@@ -26,10 +26,10 @@
 <br>
 <ul>
     <li>
-        <b>Crush</b> - Reduce the resolution (Reference: <a href="https://en.wikipedia.org/wiki/Bitcrusher">📖</a>)
+        <b>Crush</b> - Reduce amplitude resolution (Reference: <a href="https://en.wikipedia.org/wiki/Bitcrusher">📖</a>)
     </li>
     <li>
-        <b>Downsample</b> - Reduce the sample rate (Reference: <a href="https://en.wikipedia.org/wiki/Bitcrusher">📖</a>)
+        <b>Downsample</b> - Reduce time resolution (Reference: <a href="https://en.wikipedia.org/wiki/Bitcrusher">📖</a>)
     </li>
     <li>
         <b>Jitter</b> - Add clocking distortion (Reference: <a href="https://headfonics.com/what-is-jitter-in-audio/">📖</a>)
