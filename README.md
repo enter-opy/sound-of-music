@@ -1,7 +1,5 @@
 <h1>Sound of Music</h2>
 
-<h3>Sound of music is a multi-band audio effect plugin that adds digital artifacts to an audio signal</h3>
-
 <img src="Screenshot.png" width="800">
 
 <br>
