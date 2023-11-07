@@ -13,7 +13,7 @@
     analyzer to switch between each of them. Stereo/Mono and Dry/Wet work globally.
 </p>
 <br>
-<ul>
+<ul type="none">
     <li>
         <a href="https://en.wikipedia.org/wiki/Bitcrusher">Crush</a>
     </li>
@@ -25,11 +25,5 @@
     </li>
     <li>
         <a href="https://humbuckersoup.com/soft-clipping-vs-hard-clipping-difference/">Clip</a>
-    </li>
-</ul>
-        <b>Stereo/Mono</b> - Stereo width of the signal
-    </li>
-    <li>
-        <b>Dry/Wet</b> - Amount of dry/wet signal
     </li>
 </ul>
