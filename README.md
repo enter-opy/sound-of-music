@@ -7,12 +7,10 @@
 <br>
 
 <p>
-    Sound of music is a multiband bit crusher with 3 bands. The spectrum analyzer allows you to
-    visualize the audio and control the band parameters. Move Freq 1 and Freq 2 sliders to adjust bandwidths. There
-    are 3 instances of crush, downsample, jitter and clip each for the 3 bands. Select bands on the spectrum
-    analyzer to switch between each of them. Stereo/Mono and Dry/Wet work globally.
+    Sound of Music is a multiband bit crusher plugin with three bands, allowing detailed audio control and manipulation.
 </p>
 <br>
+<h2><u>References</u></h2>
 <ul type="none">
     <li>
         <a href="https://en.wikipedia.org/wiki/Bitcrusher">Crush</a>
