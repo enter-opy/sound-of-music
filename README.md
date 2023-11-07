@@ -26,16 +26,16 @@
 <br>
 <ul>
     <li>
-        <b>Crush</b> - Reduce amplitude resolution (Reference: <a href="https://en.wikipedia.org/wiki/Bitcrusher">📖</a>)
+        <b>Crush</b> - Reduce amplitude resolution (Reference: <a href="https://en.wikipedia.org/wiki/Bitcrusher">📖</a>
     </li>
     <li>
-        <b>Downsample</b> - Reduce time resolution (Reference: <a href="https://en.wikipedia.org/wiki/Bitcrusher">📖</a>)
+        <b>Downsample</b> - Reduce time resolution (Reference: <a href="https://en.wikipedia.org/wiki/Bitcrusher">📖</a>
     </li>
     <li>
-        <b>Jitter</b> - Add clocking distortion (Reference: <a href="https://headfonics.com/what-is-jitter-in-audio/">📖</a>)
+        <b>Jitter</b> - Add clocking distortion (Reference: <a href="https://headfonics.com/what-is-jitter-in-audio/">📖</a>
     </li>
     <li>
-        <b>Clip</b> - Hard clipper (Reference: <a href="https://humbuckersoup.com/soft-clipping-vs-hard-clipping-difference/">📖</a>)
+        <b>Clip</b> - Hard clipper (Reference: <a href="https://humbuckersoup.com/soft-clipping-vs-hard-clipping-difference/">📖</a>
     </li>
 </ul>
 <br>
