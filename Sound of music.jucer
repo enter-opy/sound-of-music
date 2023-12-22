@@ -2,7 +2,7 @@
 
 <JUCERPROJECT id="dpwBTX" name="Sound of music" projectType="audioplug" useAppConfig="0"
               addUsingNamespaceToJuceHeader="1" displaySplashScreen="1" jucerFormatVersion="1"
-              companyName="vivek vijayan" pluginFormats="buildAAX,buildLV2,buildStandalone,buildVST,buildVST3">
+              companyName="vivek vijayan" pluginFormats="buildLV2,buildStandalone,buildVST3">
   <MAINGROUP id="u8I9Ca" name="Sound of music">
     <GROUP id="{0BBF2A81-2DD3-033B-256A-EC5D9EAC8C5A}" name="Source">
       <FILE id="WYYC5T" name="PluginProcessor.cpp" compile="1" resource="0"
