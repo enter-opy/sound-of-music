@@ -1,6 +1,6 @@
 <h1>Sound of Music</h2>
 
-<img src="res/Screenshot.png" width="800">
+<img src="res/Screenshot.png" width="801">
 
 <br>
 
