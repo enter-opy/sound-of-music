@@ -18,8 +18,6 @@
 
 class SliderLookAndFeelGradient : public LookAndFeel_V4 {
 public:
-    float colourPosition;
-
     void drawRotarySlider(Graphics& g, int x, int y, int width, int height, float sliderPos, float rotatoryStartAngle, float rotatoryEndAngle, juce::Slider& slider) override {
         float diameter = jmin(width - 5, height - 5);
         float radius = diameter / 2;
@@ -29,13 +27,11 @@ public:
         float ry = centerY - radius;
         float angle = rotatoryStartAngle + sliderPos * (rotatoryEndAngle - rotatoryStartAngle);
 
-        ColourGradient gradient(Colour::fromRGB(0x37, 0x9B, 0xE3), centerX, 0, Colour::fromRGB(0xCB, 0x16, 0x6D), centerX, height + 50.0 - colourPosition, false);
-
         Rectangle<float> area(rx, ry, diameter, diameter);
 
         Path thumb;
         thumb.addEllipse(0, -radius + 10.0, 10.0f, 10.0f);
-        g.setGradientFill(gradient);
+        g.setColour(Colour::fromRGB(0x30, 0xE0, 0x30));
         g.fillPath(thumb, AffineTransform::rotation(angle).translated(centerX, centerY));
 
         g.drawEllipse(area, 4.0f);
@@ -177,6 +173,8 @@ private:
     int frequency2{ 2000 };
 
     float x;
+
+    Typeface::Ptr customFont = juce::Typeface::createSystemTypefaceFor(BinaryData::LACONICK_TTF, BinaryData::LACONICK_TTFSize);
 
 public:
     std::unique_ptr <AudioProcessorValueTreeState::SliderAttachment> crushValueLow;

@@ -45,12 +45,12 @@ SoundofmusicAudioProcessorEditor::SoundofmusicAudioProcessorEditor (Soundofmusic
     crushSliderLow.setRange(0.0, 100.0, 1.0);
     crushSliderLow.setValue(audioProcessor.getValue(0));
     crushSliderLow.setTextBoxStyle(Slider::NoTextBox, false, 0, 0);
-    crushName.setText("CRUSH", dontSendNotification);
+    crushName.setText("Quantization", dontSendNotification);
     crushName.setJustificationType(Justification::centred);
-    crushName.setColour(Label::textColourId, Colour::fromRGB(0xB1, 0x2E, 0x82));
+    crushName.setColour(Label::textColourId, Colour::fromRGB(0x30, 0xE0, 0x30));
     addAndMakeVisible(&crushName);
     crushIndicatorLow.setJustificationType(Justification::centred);
-    crushIndicatorLow.setColour(Label::textColourId, Colour::fromRGB(0xB1, 0x2E, 0x82));
+    crushIndicatorLow.setColour(Label::textColourId, Colour::fromRGB(0x30, 0xE0, 0x30));
     crushIndicatorLow.setVisible(false);
     addAndMakeVisible(&crushIndicatorLow);
     crushSliderLow.setLookAndFeel(&crushLookAndFeelLow);
@@ -62,7 +62,7 @@ SoundofmusicAudioProcessorEditor::SoundofmusicAudioProcessorEditor (Soundofmusic
     crushSliderMid.setValue(audioProcessor.getValue(4));
     crushSliderMid.setTextBoxStyle(Slider::NoTextBox, false, 0, 0);
     crushIndicatorMid.setJustificationType(Justification::centred);
-    crushIndicatorMid.setColour(Label::textColourId, Colour::fromRGB(0xB1, 0x2E, 0x82));
+    crushIndicatorMid.setColour(Label::textColourId, Colour::fromRGB(0x30, 0xE0, 0x30));
     crushIndicatorMid.setVisible(false);
     addAndMakeVisible(&crushIndicatorMid);
     crushSliderMid.setLookAndFeel(&crushLookAndFeelMid);
@@ -75,7 +75,7 @@ SoundofmusicAudioProcessorEditor::SoundofmusicAudioProcessorEditor (Soundofmusic
     crushSliderHigh.setValue(audioProcessor.getValue(8));
     crushSliderHigh.setTextBoxStyle(Slider::NoTextBox, false, 0, 0);
     crushIndicatorHigh.setJustificationType(Justification::centred);
-    crushIndicatorHigh.setColour(Label::textColourId, Colour::fromRGB(0xB1, 0x2E, 0x82));
+    crushIndicatorHigh.setColour(Label::textColourId, Colour::fromRGB(0x30, 0xE0, 0x30));
     addAndMakeVisible(&crushIndicatorHigh);
     crushIndicatorHigh.setVisible(false);
     crushSliderHigh.setLookAndFeel(&crushLookAndFeelHigh);
@@ -87,12 +87,12 @@ SoundofmusicAudioProcessorEditor::SoundofmusicAudioProcessorEditor (Soundofmusic
     downSampleSliderLow.setRange(0.0, 100.0, 1.0);
     downSampleSliderLow.setValue(audioProcessor.getValue(1));
     downSampleSliderLow.setTextBoxStyle(Slider::NoTextBox, false, 0, 0);
-    downSampleName.setText("DOWNSAMPLE", dontSendNotification);
+    downSampleName.setText("Downsampling", dontSendNotification);
     downSampleName.setJustificationType(Justification::centred);
-    downSampleName.setColour(Label::textColourId, Colour::fromRGB(0xB1, 0x2E, 0x82));
+    downSampleName.setColour(Label::textColourId, Colour::fromRGB(0x30, 0xE0, 0x30));
     addAndMakeVisible(&downSampleName);
     downSampleIndicatorLow.setJustificationType(Justification::centred);
-    downSampleIndicatorLow.setColour(Label::textColourId, Colour::fromRGB(0xB1, 0x2E, 0x82));
+    downSampleIndicatorLow.setColour(Label::textColourId, Colour::fromRGB(0x30, 0xE0, 0x30));
     addAndMakeVisible(&downSampleIndicatorLow);
     downSampleSliderLow.setLookAndFeel(&downSampleLookAndFeelLow);
     downSampleSliderLow.addListener(this);
@@ -103,7 +103,7 @@ SoundofmusicAudioProcessorEditor::SoundofmusicAudioProcessorEditor (Soundofmusic
     downSampleSliderMid.setValue(audioProcessor.getValue(5));
     downSampleSliderMid.setTextBoxStyle(Slider::NoTextBox, false, 0, 0);
     downSampleIndicatorMid.setJustificationType(Justification::centred);
-    downSampleIndicatorMid.setColour(Label::textColourId, Colour::fromRGB(0xB1, 0x2E, 0x82));
+    downSampleIndicatorMid.setColour(Label::textColourId, Colour::fromRGB(0x30, 0xE0, 0x30));
     addAndMakeVisible(&downSampleIndicatorMid);
     downSampleSliderMid.setLookAndFeel(&downSampleLookAndFeelMid);
     downSampleSliderMid.addListener(this);
@@ -115,7 +115,7 @@ SoundofmusicAudioProcessorEditor::SoundofmusicAudioProcessorEditor (Soundofmusic
     downSampleSliderHigh.setValue(audioProcessor.getValue(9));
     downSampleSliderHigh.setTextBoxStyle(Slider::NoTextBox, false, 0, 0);
     downSampleIndicatorHigh.setJustificationType(Justification::centred);
-    downSampleIndicatorHigh.setColour(Label::textColourId, Colour::fromRGB(0xB1, 0x2E, 0x82));
+    downSampleIndicatorHigh.setColour(Label::textColourId, Colour::fromRGB(0x30, 0xE0, 0x30));
     addAndMakeVisible(&downSampleIndicatorHigh);
     downSampleSliderHigh.setLookAndFeel(&downSampleLookAndFeelHigh);
     downSampleSliderHigh.addListener(this);
@@ -126,12 +126,12 @@ SoundofmusicAudioProcessorEditor::SoundofmusicAudioProcessorEditor (Soundofmusic
     jitterSliderLow.setRange(0.0, 100.0, 1.0);
     jitterSliderLow.setValue(audioProcessor.getValue(2));
     jitterSliderLow.setTextBoxStyle(Slider::NoTextBox, false, 0, 0);
-    jitterName.setText("JITTER", dontSendNotification);
+    jitterName.setText("Error", dontSendNotification);
     jitterName.setJustificationType(Justification::centred);
-    jitterName.setColour(Label::textColourId, Colour::fromRGB(0xB1, 0x2E, 0x82));
+    jitterName.setColour(Label::textColourId, Colour::fromRGB(0x30, 0xE0, 0x30));
     addAndMakeVisible(&jitterName);
     jitterIndicatorLow.setJustificationType(Justification::centred);
-    jitterIndicatorLow.setColour(Label::textColourId, Colour::fromRGB(0xB1, 0x2E, 0x82));
+    jitterIndicatorLow.setColour(Label::textColourId, Colour::fromRGB(0x30, 0xE0, 0x30));
     addAndMakeVisible(&jitterIndicatorLow);
     jitterSliderLow.setLookAndFeel(&jitterLookAndFeelLow);
     jitterSliderLow.addListener(this);
@@ -142,7 +142,7 @@ SoundofmusicAudioProcessorEditor::SoundofmusicAudioProcessorEditor (Soundofmusic
     jitterSliderMid.setValue(audioProcessor.getValue(6));
     jitterSliderMid.setTextBoxStyle(Slider::NoTextBox, false, 0, 0);
     jitterIndicatorMid.setJustificationType(Justification::centred);
-    jitterIndicatorMid.setColour(Label::textColourId, Colour::fromRGB(0xB1, 0x2E, 0x82));
+    jitterIndicatorMid.setColour(Label::textColourId, Colour::fromRGB(0x30, 0xE0, 0x30));
     addAndMakeVisible(&jitterIndicatorMid);
     jitterSliderMid.setLookAndFeel(&jitterLookAndFeelMid);
     jitterSliderMid.addListener(this);
@@ -154,7 +154,7 @@ SoundofmusicAudioProcessorEditor::SoundofmusicAudioProcessorEditor (Soundofmusic
     jitterSliderHigh.setValue(audioProcessor.getValue(10));
     jitterSliderHigh.setTextBoxStyle(Slider::NoTextBox, false, 0, 0);
     jitterIndicatorHigh.setJustificationType(Justification::centred);
-    jitterIndicatorHigh.setColour(Label::textColourId, Colour::fromRGB(0xB1, 0x2E, 0x82));
+    jitterIndicatorHigh.setColour(Label::textColourId, Colour::fromRGB(0x30, 0xE0, 0x30));
     addAndMakeVisible(&jitterIndicatorHigh);
     jitterSliderHigh.setLookAndFeel(&jitterLookAndFeelHigh);
     jitterSliderHigh.addListener(this);
@@ -165,12 +165,12 @@ SoundofmusicAudioProcessorEditor::SoundofmusicAudioProcessorEditor (Soundofmusic
     clipSliderLow.setRange(-15.0, 0.0, 0.1);
     clipSliderLow.setValue(audioProcessor.getValue(3));
     clipSliderLow.setTextBoxStyle(Slider::NoTextBox, false, 0, 0);
-    clipName.setText("CLIP", dontSendNotification);
+    clipName.setText("Clipping", dontSendNotification);
     clipName.setJustificationType(Justification::centred);
-    clipName.setColour(Label::textColourId, Colour::fromRGB(0xB1, 0x2E, 0x82));
+    clipName.setColour(Label::textColourId, Colour::fromRGB(0x30, 0xE0, 0x30));
     addAndMakeVisible(&clipName);
     clipIndicatorLow.setJustificationType(Justification::centred);
-    clipIndicatorLow.setColour(Label::textColourId, Colour::fromRGB(0xB1, 0x2E, 0x82));
+    clipIndicatorLow.setColour(Label::textColourId, Colour::fromRGB(0x30, 0xE0, 0x30));
     addAndMakeVisible(&clipIndicatorLow);
     clipSliderLow.setLookAndFeel(&clipLookAndFeelLow);
     clipSliderLow.addListener(this);
@@ -181,7 +181,7 @@ SoundofmusicAudioProcessorEditor::SoundofmusicAudioProcessorEditor (Soundofmusic
     clipSliderMid.setValue(audioProcessor.getValue(7));
     clipSliderMid.setTextBoxStyle(Slider::NoTextBox, false, 0, 0);
     clipIndicatorMid.setJustificationType(Justification::centred);
-    clipIndicatorMid.setColour(Label::textColourId, Colour::fromRGB(0xB1, 0x2E, 0x82));
+    clipIndicatorMid.setColour(Label::textColourId, Colour::fromRGB(0x30, 0xE0, 0x30));
     addAndMakeVisible(&clipIndicatorMid);
     clipSliderMid.setLookAndFeel(&clipLookAndFeelMid);
     clipSliderMid.addListener(this);
@@ -193,7 +193,7 @@ SoundofmusicAudioProcessorEditor::SoundofmusicAudioProcessorEditor (Soundofmusic
     clipSliderHigh.setValue(audioProcessor.getValue(11));
     clipSliderHigh.setTextBoxStyle(Slider::NoTextBox, false, 0, 0);
     clipIndicatorHigh.setJustificationType(Justification::centred);
-    clipIndicatorHigh.setColour(Label::textColourId, Colour::fromRGB(0xB1, 0x2E, 0x82));
+    clipIndicatorHigh.setColour(Label::textColourId, Colour::fromRGB(0x30, 0xE0, 0x30));
     addAndMakeVisible(&clipIndicatorHigh);
     clipSliderHigh.setLookAndFeel(&clipLookAndFeelHigh);
     clipSliderHigh.addListener(this);
@@ -206,10 +206,10 @@ SoundofmusicAudioProcessorEditor::SoundofmusicAudioProcessorEditor (Soundofmusic
     monoSlider.setTextBoxStyle(Slider::NoTextBox, false, 0, 0);
     monoName.setText("STEREO/MONO", dontSendNotification);
     monoName.setJustificationType(Justification::centred);
-    monoName.setColour(Label::textColourId, Colour::fromRGB(0xB1, 0x2E, 0x82));
+    monoName.setColour(Label::textColourId, Colour::fromRGB(0x30, 0xE0, 0x30));
     addAndMakeVisible(&monoName);
     monoIndicator.setJustificationType(Justification::centred);
-    monoIndicator.setColour(Label::textColourId, Colour::fromRGB(0xB1, 0x2E, 0x82));
+    monoIndicator.setColour(Label::textColourId, Colour::fromRGB(0x30, 0xE0, 0x30));
     addAndMakeVisible(&monoIndicator);
     monoSlider.setLookAndFeel(&monoLookAndFeel);
     monoSlider.addListener(this);
@@ -221,10 +221,10 @@ SoundofmusicAudioProcessorEditor::SoundofmusicAudioProcessorEditor (Soundofmusic
     mixSlider.setTextBoxStyle(Slider::NoTextBox, false, 0, 0);
     mixName.setText("DRY/WET", dontSendNotification);
     mixName.setJustificationType(Justification::centred);
-    mixName.setColour(Label::textColourId, Colour::fromRGB(0xB1, 0x2E, 0x82));
+    mixName.setColour(Label::textColourId, Colour::fromRGB(0x30, 0xE0, 0x30));
     addAndMakeVisible(&mixName);
     mixIndicator.setJustificationType(Justification::centred);
-    mixIndicator.setColour(Label::textColourId, Colour::fromRGB(0xB1, 0x2E, 0x82));
+    mixIndicator.setColour(Label::textColourId, Colour::fromRGB(0x30, 0xE0, 0x30));
     addAndMakeVisible(&mixIndicator);
     mixSlider.setLookAndFeel(&mixLookAndFeel);
     mixSlider.addListener(this);
@@ -246,42 +246,24 @@ SoundofmusicAudioProcessorEditor::SoundofmusicAudioProcessorEditor (Soundofmusic
     clipIndicatorMid.setVisible(false);
     clipIndicatorHigh.setVisible(false);
 
-    monoLookAndFeel.colourPosition = 90.0 / 100.0 * (monoSlider.getValue());
-    mixLookAndFeel.colourPosition = 90.0 / 100.0 * (mixSlider.getValue());
-
-    crushLookAndFeelLow.colourPosition = 90.0 / 100.0 * (crushSliderLow.getValue());
-    downSampleLookAndFeelLow.colourPosition = 90.0 / 100.0 * (downSampleSliderLow.getValue());
-    jitterLookAndFeelLow.colourPosition = 90.0 / 100.0 * (jitterSliderLow.getValue());
-    clipLookAndFeelLow.colourPosition = 90.0 / 15.0 * (clipSliderLow.getValue() + 15);
-
-    crushLookAndFeelMid.colourPosition = 90.0 / 100.0 * (crushSliderMid.getValue());
-    downSampleLookAndFeelMid.colourPosition = 90.0 / 100.0 * (downSampleSliderMid.getValue());
-    jitterLookAndFeelMid.colourPosition = 90.0 / 100.0 * (jitterSliderMid.getValue());
-    clipLookAndFeelMid.colourPosition = 90.0 / 15.0 * (clipSliderMid.getValue() + 15);
-
-    crushLookAndFeelHigh.colourPosition = 90.0 / 100.0 * (crushSliderHigh.getValue());
-    downSampleLookAndFeelHigh.colourPosition = 90.0 / 100.0 * (downSampleSliderHigh.getValue());
-    jitterLookAndFeelHigh.colourPosition = 90.0 / 100.0 * (jitterSliderHigh.getValue());
-    clipLookAndFeelHigh.colourPosition = 90.0 / 15.0 * (clipSliderHigh.getValue() + 15);
-
     label0.setText("20 Hz", dontSendNotification);
     label0.setJustificationType(Justification::left);
-    label0.setColour(Label::textColourId, Colour::fromRGB(0xB1, 0x2E, 0x82));
+    label0.setColour(Label::textColourId, Colour::fromRGB(0x30, 0xE0, 0x30));
     addAndMakeVisible(&label0);
 
     label1.setText("500 Hz", dontSendNotification);
     label1.setJustificationType(Justification::centred);
-    label1.setColour(Label::textColourId, Colour::fromRGB(0xB1, 0x2E, 0x82));
+    label1.setColour(Label::textColourId, Colour::fromRGB(0x30, 0xE0, 0x30));
     addAndMakeVisible(&label1);
 
     label2.setText("2 kHz", dontSendNotification);
     label2.setJustificationType(Justification::centred);
-    label2.setColour(Label::textColourId, Colour::fromRGB(0xB1, 0x2E, 0x82));
+    label2.setColour(Label::textColourId, Colour::fromRGB(0x30, 0xE0, 0x30));
     addAndMakeVisible(&label2);
 
     label3.setText("20 kHz", dontSendNotification);
     label3.setJustificationType(Justification::right);
-    label3.setColour(Label::textColourId, Colour::fromRGB(0xB1, 0x2E, 0x82));
+    label3.setColour(Label::textColourId, Colour::fromRGB(0x30, 0xE0, 0x30));
     addAndMakeVisible(&label3);
 
     divider1Slider.setSliderStyle(Slider::RotaryHorizontalVerticalDrag);
@@ -304,13 +286,45 @@ SoundofmusicAudioProcessorEditor::SoundofmusicAudioProcessorEditor (Soundofmusic
 
     freq1Name.setText("FREQ 1", dontSendNotification);
     freq1Name.setJustificationType(Justification::centred);
-    freq1Name.setColour(Label::textColourId, Colour::fromRGB(0xB1, 0x2E, 0x82));
+    freq1Name.setColour(Label::textColourId, Colour::fromRGB(0x30, 0xE0, 0x30));
     addAndMakeVisible(&freq1Name);
 
     freq2Name.setText("FREQ 2", dontSendNotification);
     freq2Name.setJustificationType(Justification::centred);
-    freq2Name.setColour(Label::textColourId, Colour::fromRGB(0xB1, 0x2E, 0x82));
+    freq2Name.setColour(Label::textColourId, Colour::fromRGB(0x30, 0xE0, 0x30));
     addAndMakeVisible(&freq2Name);
+
+    crushName.setFont(Font(customFont).withHeight(16));
+    downSampleName.setFont(Font(customFont).withHeight(16));
+    jitterName.setFont(Font(customFont).withHeight(16));
+    clipName.setFont(Font(customFont).withHeight(16));
+    monoName.setFont(Font(customFont).withHeight(16));
+    mixName.setFont(Font(customFont).withHeight(16));
+    freq1Name.setFont(Font(customFont).withHeight(16));
+    freq2Name.setFont(Font(customFont).withHeight(16));
+
+    crushIndicatorLow.setFont(Font(customFont).withHeight(20));
+    downSampleIndicatorLow.setFont(Font(customFont).withHeight(20));
+    jitterIndicatorLow.setFont(Font(customFont).withHeight(20));
+    clipIndicatorLow.setFont(Font(customFont).withHeight(20));
+
+    crushIndicatorMid.setFont(Font(customFont).withHeight(20));
+    downSampleIndicatorMid.setFont(Font(customFont).withHeight(20));
+    jitterIndicatorMid.setFont(Font(customFont).withHeight(20));
+    clipIndicatorMid.setFont(Font(customFont).withHeight(20));
+
+    crushIndicatorHigh.setFont(Font(customFont).withHeight(20));
+    downSampleIndicatorHigh.setFont(Font(customFont).withHeight(20));
+    jitterIndicatorHigh.setFont(Font(customFont).withHeight(20));
+    clipIndicatorHigh.setFont(Font(customFont).withHeight(20));
+
+    monoIndicator.setFont(Font(customFont).withHeight(20));
+    mixIndicator.setFont(Font(customFont).withHeight(20));
+
+    label0.setFont(Font(customFont).withHeight(15));
+    label1.setFont(Font(customFont).withHeight(15));
+    label2.setFont(Font(customFont).withHeight(15));
+    label3.setFont(Font(customFont).withHeight(15));
 }
 
 SoundofmusicAudioProcessorEditor::~SoundofmusicAudioProcessorEditor()
@@ -320,19 +334,10 @@ SoundofmusicAudioProcessorEditor::~SoundofmusicAudioProcessorEditor()
 //==============================================================================
 void SoundofmusicAudioProcessorEditor::paint (juce::Graphics& g)
 {
-    g.setColour(Colour::fromRGB(0x0D, 0x10, 0x15));
+    g.setColour(Colour::fromRGB(0x20, 0x20, 0x40));
     g.fillAll();
 
-    ColourGradient gradient1(Colour::fromRGB(0x37, 0x9B, 0xE3), 40, 290, Colour::fromRGB(0xCB, 0x16, 0x6D), 40, 460, false);
-    g.setGradientFill(gradient1);
-
-    g.drawRoundedRectangle(distortionArea, 10, 2);
-    g.drawRoundedRectangle(outputArea, 10, 2);
-
-    ColourGradient gradient2(Colour::fromRGB(0x37, 0x9B, 0xE3), 40, 40, Colour::fromRGB(0xCB, 0x16, 0x6D), 40, 180, false);
-    g.setGradientFill(gradient2);
-
-    g.drawRoundedRectangle(dividerArea, 10, 2);
+    g.setColour(Colour::fromRGB(0x30, 0xC0, 0x30));
 
     drawFrame(g);
 
@@ -342,7 +347,7 @@ void SoundofmusicAudioProcessorEditor::paint (juce::Graphics& g)
     g.fillRect(divider1);
     g.fillRect(divider2);
 
-    g.setColour(Colour::fromRGBA(0x37, 0x9B, 0xE3, 0x44));
+    g.setColour(Colour::fromRGBA(0xE0, 0xE0, 0xE0, 0x50));
     g.fillRect(bandSelectionArea);
 }
 
@@ -400,9 +405,6 @@ void SoundofmusicAudioProcessorEditor::resized()
     x = mapToLog10((x - 40) / 500.0, 40.0, 540.0);
     divider2Pos = 580 - x;
 
-    divider1LookAndFeel.colourPosition = 90.0 / 500 * (divider1Pos - 40);
-    divider2LookAndFeel.colourPosition = 90.0 / 500 * (divider2Pos - 40);
-
     marker1.setBounds(divider1Pos - 1, 215, 4, 10);
     marker2.setBounds(divider2Pos - 1, 215, 4, 10);
 
@@ -427,76 +429,62 @@ void SoundofmusicAudioProcessorEditor::sliderValueChanged(Slider* slider) {
     String temp;
 
     if (slider == &crushSliderLow) {
-        crushLookAndFeelLow.colourPosition = 90.0 / 100.0 * (crushSliderLow.getValue());
         temp = String(crushSliderLow.getValue()) + " %";
         crushIndicatorLow.setText(temp, dontSendNotification);
     }
     else if (slider == &crushSliderMid) {
-        crushLookAndFeelMid.colourPosition = 90.0 / 100.0 * (crushSliderMid.getValue());
         temp = String(crushSliderMid.getValue()) + " %";
         crushIndicatorMid.setText(temp, dontSendNotification);
     }
     else if (slider == &crushSliderHigh) {
-        crushLookAndFeelHigh.colourPosition = 90.0 / 100.0 * (crushSliderHigh.getValue());
         temp = String(crushSliderHigh.getValue()) + " %";
         crushIndicatorHigh.setText(temp, dontSendNotification);
     }
 
     else if (slider == &downSampleSliderLow) {
-        downSampleLookAndFeelLow.colourPosition = 90.0 / 100.0 * (downSampleSliderLow.getValue());
         temp = String(downSampleSliderLow.getValue()) + " %";
         downSampleIndicatorLow.setText(temp, dontSendNotification);
     }
     else if (slider == &downSampleSliderMid) {
-        downSampleLookAndFeelMid.colourPosition = 90.0 / 100.0 * (downSampleSliderMid.getValue());
         temp = String(downSampleSliderMid.getValue()) + " %";
         downSampleIndicatorMid.setText(temp, dontSendNotification);
     }
     else if (slider == &downSampleSliderHigh) {
-        downSampleLookAndFeelHigh.colourPosition = 90.0 / 100.0 * (downSampleSliderHigh.getValue());
         temp = String(downSampleSliderHigh.getValue()) + " %";
         downSampleIndicatorHigh.setText(temp, dontSendNotification);
     }
 
     else if (slider == &jitterSliderLow) {
-        jitterLookAndFeelLow.colourPosition = 90.0 / 100.0 * (jitterSliderLow.getValue());
         temp = String(jitterSliderLow.getValue()) + " %";
         jitterIndicatorLow.setText(temp, dontSendNotification);
     }
     else if (slider == &jitterSliderMid) {
-        jitterLookAndFeelMid.colourPosition = 90.0 / 100.0 * (jitterSliderMid.getValue());
         temp = String(jitterSliderMid.getValue()) + " %";
         jitterIndicatorMid.setText(temp, dontSendNotification);
     }
     else if (slider == &jitterSliderHigh) {
-        jitterLookAndFeelHigh.colourPosition = 90.0 / 100.0 * (jitterSliderHigh.getValue());
         temp = String(jitterSliderHigh.getValue()) + " %";
         jitterIndicatorHigh.setText(temp, dontSendNotification);
     }
 
     else if (slider == &clipSliderLow) {
-        clipLookAndFeelLow.colourPosition = 90.0 / 15.0 * (clipSliderLow.getValue() + 15);
         temp = String(clipSliderLow.getValue()) + " dB";
         clipIndicatorLow.setText(temp, dontSendNotification);
     }
     else if (slider == &clipSliderMid) {
-        clipLookAndFeelMid.colourPosition = 90.0 / 15.0 * (clipSliderMid.getValue() + 15);
         temp = String(clipSliderMid.getValue()) + " dB";
         clipIndicatorMid.setText(temp, dontSendNotification);
     }
     else if (slider == &clipSliderHigh) {
-        clipLookAndFeelHigh.colourPosition = 90.0 / 15.0 * (clipSliderHigh.getValue() + 15);
         temp = String(clipSliderHigh.getValue()) + " dB";
         clipIndicatorHigh.setText(temp, dontSendNotification);
     }
 
     else if (slider == &monoSlider) {
-        monoLookAndFeel.colourPosition = 90.0 / 100.0 * (monoSlider.getValue());
         temp = String(monoSlider.getValue()) + " %";
         monoIndicator.setText(temp, dontSendNotification);
     }
     else if (slider == &mixSlider) {
-        mixLookAndFeel.colourPosition = 90.0 / 100.0 * (mixSlider.getValue());
         temp = String(mixSlider.getValue()) + " dB";
         mixIndicator.setText(temp, dontSendNotification);
     }
@@ -520,8 +508,6 @@ void SoundofmusicAudioProcessorEditor::sliderValueChanged(Slider* slider) {
         x = mapToLog10((19980 - (frequency1 - 20.0)) / 19980.0, 40.0, 540.0);
         x = mapToLog10((x - 40) / 500.0, 40.0, 540.0);
         divider1Pos = 580 - x;
-
-        divider1LookAndFeel.colourPosition = 90.0 / 500 * (divider1Pos - 40);
 
         if (divider1Pos >= divider2Pos - 50) {
             label1.setVisible(true);
@@ -573,8 +559,6 @@ void SoundofmusicAudioProcessorEditor::sliderValueChanged(Slider* slider) {
         x = mapToLog10((x - 40) / 500.0, 40.0, 540.0);
         divider2Pos = 580 - x;
 
-        divider2LookAndFeel.colourPosition = 90.0 / 500 * (divider2Pos - 40);
-
         if (divider2Pos <= divider1Pos + 50) {
             label1.setVisible(false);
             label2.setVisible(true);
@@ -604,7 +588,7 @@ void SoundofmusicAudioProcessorEditor::sliderValueChanged(Slider* slider) {
             bandSelectionArea.setBounds(divider1Pos, 40, divider2Pos - divider1Pos, 180);
         }
         else if (band == 2) {
-            bandSelectionArea.setBounds(divider2Pos, 40, 540 - divider2Pos, 180);
+            bandSelectionArea.setBounds(divider2Pos, 40, spectrum.getRight() - divider2Pos, 180);
         }
     }
 }
@@ -798,13 +782,10 @@ void SoundofmusicAudioProcessorEditor::timerCallback()
 
 void SoundofmusicAudioProcessorEditor::drawFrame(juce::Graphics& g)
 {
-    ColourGradient gradientOutSpectrum(Colour::fromRGB(0x17, 0x7B, 0xC3), 40, 40, Colour::fromRGB(0xAB, 0x06, 0x4D), 40, 220, false);
-    ColourGradient gradientInSpectrum(Colour::fromRGB(0x37, 0x9B, 0xE3), 40, 40, Colour::fromRGB(0xCB, 0x16, 0x6D), 40, 220, false);
-
     for (int i = 1; i < audioProcessor.scopeSize; ++i)
     {
         
-        g.setGradientFill(gradientOutSpectrum);
+        g.setColour(Colour::fromRGB(0x30, 0xE0, 0x30));
 
         g.drawLine({ (float)juce::jmap(i - 1, 0, audioProcessor.scopeSize - 1, 40, 540),
                               220.0,
@@ -812,7 +793,7 @@ void SoundofmusicAudioProcessorEditor::drawFrame(juce::Graphics& g)
                               juce::jmap(audioProcessor.scopeDataOut[i],     0.0f, 1.0f, 220.0f, 40.0f) });
 
         
-        g.setGradientFill(gradientInSpectrum);
+        g.setColour(Colour::fromRGBA(0x30, 0xE0, 0x30, 0x50));
 
         g.drawLine({ (float)juce::jmap(i - 1, 0, audioProcessor.scopeSize - 1, 40, 540),
                               220.0,
