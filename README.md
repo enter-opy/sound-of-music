@@ -46,3 +46,17 @@ To build Sound of Music from source:
 - **Stereo/Mono and Mix Controls:**
   - Choose stereo or mono processing for as needed.
   - Use the mix control to blend the processed and dry signals.
+
+## Contributing
+
+Contributions to Sound of Music are welcome! If you'd like to contribute, follow these steps:
+
+1. **Fork the Repository:** Start by forking the [Sound of Music repository](https://github.com/your-username/sound-of-music).
+   
+2. **Make Changes:** Create a new branch, make your changes, and commit them to your branch.
+
+3. **Create a Pull Request:** Push your changes to your fork and submit a pull request (PR) to the original repository.
+
+## License
+
+This project is licensed under the [Your License Name] License. See the LICENSE file for details.
