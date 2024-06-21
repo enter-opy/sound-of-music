@@ -41,7 +41,7 @@ To build Sound of Music from source:
 
 - **Select and Adjust Effects:**
   - Use the visualization to select the active band.
-  - Adjust clip, jitter, downsample, and quantization settings for the selected band.
+  - Adjust clip, error, downsample, and quantization settings for the selected band.
 
 - **Stereo/Mono and Mix Controls:**
   - Choose stereo or mono processing for as needed.
