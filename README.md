@@ -22,37 +22,42 @@ To build Sound of Music from source:
    ```bash
    git clone https://github.com/enter-opy/sound-of-music.git
    cd sound-of-music
-1. **Build from source:**
+2. **Install Dependencies:**
+   - **Windows:** Make sure you have Visual Studio installed with the necessary components for C++ development.
+   - **Mac:** Make sure you have Xcode installed with the command line tools.
+3. **Build the Plugin:**
 
-<b>Windows:</b> Open the project in Visual Studio and build.
+   **Windows:**
+   - Open the project in Visual Studio.
+   - Set the build configuration to `Release`.
+   - Build the project by selecting `Build > Build Solution`.
 
-<b>Mac:</b> Open the project in Xcode and build.
+   **Mac:**
+   - Open the project in Xcode.
+   - Set the scheme to `Release`.
+   - Build the project by selecting `Product > Build`.
 
 ## Usage
-
 - **Insert Plugin:** Load Sound of Music VST3 plugin into your preferred digital audio workstation (DAW).
-
-- **Adjust Band Frequencies:**
-  - Use freq1 and freq2 sliders to select and adjust the frequency bands.
-
+- **Adjust Frequency Bands:**
+  - **freq1 Slider:** Set the boundary between low and mid bands.
+  - **freq2 Slider:** Set the boundary between mid and high bands.
 - **Select and Adjust Effects:**
-  - Use the visualization to select the active band.
-  - Adjust clip, error, downsample, and quantization settings for the selected band.
-
+  - Select and highlight the active band.
+  - Adjust the following parameters for the selected band:
+    - **Downsample:** Controls the sample rate,introducing aliasing.
+    - **Quantization:** Controls the bit depth.
+    - **Error:** Adds random fluctuation to the signal.
+    - **Clip:** Controls the threshold level for clipping.
 - **Stereo/Mono and Mix Controls:**
-  - Choose stereo or mono processing for as needed.
-  - Use the mix control to blend the processed and dry signals.
+  - **Stereo Mono:** Controls the stereo width.
+  - **Dry Wet:** Controls the balance between the dry signal and wet signal.
+
 
 ## Contributing
-
 Contributions to Sound of Music are welcome! If you'd like to contribute, follow these steps:
-
 1. **Fork the Repository:** Start by forking the [Sound of Music repository](https://github.com/your-username/sound-of-music).
-   
 2. **Make Changes:** Create a new branch, make your changes, and commit them to your branch.
-
 3. **Create a Pull Request:** Push your changes to your fork and submit a pull request (PR) to the original repository.
-
 ## License
-
 This project is licensed under the [Your License Name] License. See the LICENSE file for details.
