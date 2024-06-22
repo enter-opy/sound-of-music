@@ -5,4 +5,4 @@
 
 */
 
-#include <juce_audio_plugin_client/juce_audio_plugin_client_VST_utils.mm>
+#include <juce_graphics/juce_graphics_Harfbuzz.cpp>

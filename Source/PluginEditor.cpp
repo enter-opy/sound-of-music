@@ -204,7 +204,7 @@ SoundofmusicAudioProcessorEditor::SoundofmusicAudioProcessorEditor (Soundofmusic
     monoSlider.setRange(0.0, 100.0, 1.0);
     monoSlider.setValue(audioProcessor.getValue(12));
     monoSlider.setTextBoxStyle(Slider::NoTextBox, false, 0, 0);
-    monoName.setText("STEREO/MONO", dontSendNotification);
+    monoName.setText("Stereo/Mono", dontSendNotification);
     monoName.setJustificationType(Justification::centred);
     monoName.setColour(Label::textColourId, Colour::fromRGB(0x30, 0xE0, 0x30));
     addAndMakeVisible(&monoName);
@@ -219,7 +219,7 @@ SoundofmusicAudioProcessorEditor::SoundofmusicAudioProcessorEditor (Soundofmusic
     mixSlider.setRange(0.0, 100.0, 1.0);
     mixSlider.setValue(audioProcessor.getValue(13));
     mixSlider.setTextBoxStyle(Slider::NoTextBox, false, 0, 0);
-    mixName.setText("DRY/WET", dontSendNotification);
+    mixName.setText("Dry/Wet", dontSendNotification);
     mixName.setJustificationType(Justification::centred);
     mixName.setColour(Label::textColourId, Colour::fromRGB(0x30, 0xE0, 0x30));
     addAndMakeVisible(&mixName);
@@ -341,14 +341,14 @@ void SoundofmusicAudioProcessorEditor::paint (juce::Graphics& g)
 
     drawFrame(g);
 
+    g.setColour(Colour::fromRGBA(0xFF, 0xFF, 0xFF, 0x20));
+    g.fillRect(bandSelectionArea);
+
     g.setColour(Colours::white);
     g.fillRect(marker1);
     g.fillRect(marker2);
     g.fillRect(divider1);
     g.fillRect(divider2);
-
-    g.setColour(Colour::fromRGBA(0xE0, 0xE0, 0xE0, 0x50));
-    g.fillRect(bandSelectionArea);
 }
 
 void SoundofmusicAudioProcessorEditor::resized()
@@ -397,10 +397,12 @@ void SoundofmusicAudioProcessorEditor::resized()
     mixName.setBounds(720, 430, 100, 20);
     mixIndicator.setBounds(720, 430, 100, 20);
 
+    frequency1 = (int)audioProcessor.getValue(14);
     x = mapToLog10((19980 - (frequency1 - 20.0)) / 19980.0, 40.0, 540.0);
     x = mapToLog10((x - 40) / 500.0, 40.0, 540.0);
     divider1Pos = 580 - x;
 
+    frequency2 = (int)audioProcessor.getValue(14);
     x = mapToLog10((19980 - (frequency2 - 20.0)) / 19980.0, 40.0, 540.0);
     x = mapToLog10((x - 40) / 500.0, 40.0, 540.0);
     divider2Pos = 580 - x;
@@ -497,7 +499,7 @@ void SoundofmusicAudioProcessorEditor::sliderValueChanged(Slider* slider) {
             divider1Slider.setEnabled(false);
         }
 
-        if (divider1Slider.getValue() <= 200.0) {
+        if (divider1Slider.getValue() <= 450) {
             label0.setVisible(false);
         }
         else {
@@ -519,7 +521,7 @@ void SoundofmusicAudioProcessorEditor::sliderValueChanged(Slider* slider) {
         }
 
         if (divider1Slider.getValue() >= 1000.0) {
-            temp = String((float)divider1Slider.getValue() / 1000.0) + " kHz";
+            temp = String((float)((int)divider1Slider.getValue() / 10 * 10) / 1000.0) + " kHz";
             label1.setText(temp, dontSendNotification);
         }
         else {
@@ -538,7 +540,7 @@ void SoundofmusicAudioProcessorEditor::sliderValueChanged(Slider* slider) {
             bandSelectionArea.setBounds(divider1Pos, 40, divider2Pos - divider1Pos, 180);
         }
         else if (band == 2) {
-            bandSelectionArea.setBounds(divider2Pos, 40, 840 - divider2Pos, 180);
+            bandSelectionArea.setBounds(divider2Pos, 40, spectrum.getRight() - divider2Pos, 180);
         }
     }
     else if (slider == &divider2Slider) {
@@ -569,7 +571,7 @@ void SoundofmusicAudioProcessorEditor::sliderValueChanged(Slider* slider) {
         }
         
         if (divider2Slider.getValue() >= 1000.0) {
-            temp = String((float)divider2Slider.getValue() / 1000.0) + " kHz";
+            temp = String((float)((int)divider1Slider.getValue() / 10 * 10) / 1000.0) + " kHz";
             label2.setText(temp, dontSendNotification);
         }
         else {
@@ -788,15 +790,15 @@ void SoundofmusicAudioProcessorEditor::drawFrame(juce::Graphics& g)
         g.setColour(Colour::fromRGB(0x30, 0xE0, 0x30));
 
         g.drawLine({ (float)juce::jmap(i - 1, 0, audioProcessor.scopeSize - 1, 40, 540),
-                              220.0,
+                              juce::jmap(audioProcessor.scopeDataOut[i - 1], 0.0f, 1.0f, 220.0f, 40.0f),
                       (float)juce::jmap(i,     0, audioProcessor.scopeSize - 1, 40, 540),
-                              juce::jmap(audioProcessor.scopeDataOut[i],     0.0f, 1.0f, 220.0f, 40.0f) });
+                              juce::jmap(audioProcessor.scopeDataOut[i], 0.0f, 1.0f, 220.0f, 40.0f) });
 
         
         g.setColour(Colour::fromRGBA(0x30, 0xE0, 0x30, 0x50));
 
         g.drawLine({ (float)juce::jmap(i - 1, 0, audioProcessor.scopeSize - 1, 40, 540),
-                              220.0,
+                             juce::jmap(audioProcessor.scopeDataIn[i - 1], 0.0f, 1.0f, 220.0f, 40.0f),
                       (float)juce::jmap(i,     0, audioProcessor.scopeSize - 1, 40, 540),
                               juce::jmap(audioProcessor.scopeDataIn[i],     0.0f, 1.0f, 220.0f, 40.0f) });
     }

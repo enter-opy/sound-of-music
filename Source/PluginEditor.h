@@ -63,8 +63,6 @@ public:
     void mouseDown(const MouseEvent&) override;
     void bandSelected(void);
 
-    juce::Rectangle<int> spectrumRect;
-
 private:
     SoundofmusicAudioProcessor& audioProcessor;
 
@@ -169,8 +167,8 @@ private:
 
     int band{ 0 };
 
-    int frequency1{ 500 };
-    int frequency2{ 2000 };
+    int frequency1;
+    int frequency2;
 
     float x;
 
