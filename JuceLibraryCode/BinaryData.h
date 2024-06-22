@@ -11,11 +11,8 @@ namespace BinaryData
     extern const char*   LACONICK_TTF;
     const int            LACONICK_TTFSize = 28260;
 
-    extern const char*   MuseoModernoSemiBold_ttf;
-    const int            MuseoModernoSemiBold_ttfSize = 89536;
-
     // Number of elements in the namedResourceList and originalFileNames arrays.
-    const int namedResourceListSize = 2;
+    const int namedResourceListSize = 1;
 
     // Points to the start of a list of resource names.
     extern const char* namedResourceList[];

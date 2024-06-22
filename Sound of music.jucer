@@ -7,8 +7,6 @@
     <GROUP id="{0BBF2A81-2DD3-033B-256A-EC5D9EAC8C5A}" name="Source">
       <GROUP id="{79ADE8BC-1C34-15FB-BF87-CB2B1C2C0F6B}" name="Assets">
         <FILE id="Cpqhi8" name="LACONICK.TTF" compile="0" resource="1" file="Source/Assets/LACONICK.TTF"/>
-        <FILE id="rLzt6K" name="MuseoModerno-SemiBold.ttf" compile="0" resource="1"
-              file="Source/Assets/MuseoModerno-SemiBold.ttf"/>
       </GROUP>
       <FILE id="WYYC5T" name="PluginProcessor.cpp" compile="1" resource="0"
             file="Source/PluginProcessor.cpp"/>
