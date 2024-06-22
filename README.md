@@ -20,7 +20,7 @@ To build Sound of Music from source:
 
 1. **Clone the Repository:**
    ```bash
-   git clone https://github.com/your-username/sound-of-music.git
+   git clone https://github.com/enter-opy/sound-of-music.git
    cd sound-of-music
 
 1. **Build from source:**
