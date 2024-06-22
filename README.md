@@ -22,7 +22,6 @@ To build Sound of Music from source:
    ```bash
    git clone https://github.com/enter-opy/sound-of-music.git
    cd sound-of-music
-
 1. **Build from source:**
 
 <b>Windows:</b> Open the project in Visual Studio and build.
