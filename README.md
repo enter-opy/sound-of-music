@@ -9,14 +9,14 @@
 ## Installation
 ### VST3 Installation (Windows)
 
-1. **Download the Plugin:** Obtain the VST3 version of Sound of Music from the releases.
+1. **Download the Plugin:** Download Sound.of.music.vst3 from [releases](https://github.com/enter-opy/sound-of-music/releases).
 
 2. **Install the Plugin:**
-   - **Copy the VST3 file into your DAW's plugin directory.**
+   - **Copy the file into your DAW's plugin directory.**
    - **Rescan Plugins:** Follow your DAW's instructions to rescan plugins or manually add the plugin if necessary.
 
 ### Build from Source
-To build Sound of Music from source:
+To build Sound of music from source:
 
 1. **Clone the Repository:**
    ```bash
@@ -36,9 +36,8 @@ To build Sound of Music from source:
    - Open the project in Xcode.
    - Set the scheme to `Release`.
    - Build the project by selecting `Product > Build`.
-
 ## Usage
-- **Insert Plugin:** Load Sound of Music VST3 plugin into your preferred digital audio workstation (DAW).
+- **Insert Plugin:** Load Sound of music plugin into your preferred digital audio workstation (DAW).
 - **Adjust Frequency Bands:**
   - **freq1 Slider:** Set the boundary between low and mid bands.
   - **freq2 Slider:** Set the boundary between mid and high bands.
@@ -53,11 +52,10 @@ To build Sound of Music from source:
   - **Stereo Mono:** Controls the stereo width.
   - **Dry Wet:** Controls the balance between the dry signal and wet signal.
 
-
 ## Contributing
 Contributions to Sound of Music are welcome! If you'd like to contribute, follow these steps:
-1. **Fork the Repository:** Start by forking the [Sound of Music repository](https://github.com/your-username/sound-of-music).
+1. **Fork the Repository:** Start by forking the [Sound of music repository](https://github.com/enter-opy/sound-of-music).
 2. **Make Changes:** Create a new branch, make your changes, and commit them to your branch.
-3. **Create a Pull Request:** Push your changes to your fork and submit a pull request (PR) to the original repository.
+3. **Create a Pull Request:** Push your changes to your fork and submit a pull request to the original repository.
 ## License
-This project is licensed under the [Your License Name] License. See the LICENSE file for details.
+This project is licensed under the GNU General Public License. See the [LICENSE](https://github.com/enter-opy/sound-of-music/blob/main/LICENSE) for details.
