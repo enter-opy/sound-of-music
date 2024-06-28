@@ -1,6 +1,6 @@
 <h1>Sound of Music</h2>
 
-<img src="res/Screenshot.png" width="800">
+<p align="center"><img src="res/Screenshot.png" width="700"></p>
 
 <p>
     Sound of Music is a multiband bit crusher plugin with three bands, allowing detailed audio control and manipulation.
