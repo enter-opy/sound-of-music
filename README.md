@@ -57,5 +57,8 @@ Contributions to Sound of music are welcome! If you'd like to contribute, follow
 1. **Fork the Repository:** Start by forking the [Sound of music repository](https://github.com/enter-opy/sound-of-music).
 2. **Make Changes:** Create a new branch, make your changes, and commit them to your branch.
 3. **Create a Pull Request:** Push your changes to your fork and submit a pull request to the original repository.
+
+[![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-%23FFDD00.svg?style=for-the-badge&logo=buy-me-a-coffee&logoColor=black)](https://buymeacoffee.com/vivekvijayan12)
+
 ## License
 This project is licensed under the GNU General Public License. See the [LICENSE](https://github.com/enter-opy/sound-of-music/blob/main/LICENSE) for details.
